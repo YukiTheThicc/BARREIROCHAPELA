@@ -8,24 +8,39 @@ from datetime import datetime
 from venAviso import *
 from venCalendar import *
 from venPrincipal import *
-from venSalir import *
+from venConfirmacion import *
 
 
 class DialogAviso(QtWidgets.QDialog):
     def __init__(self):
         super(DialogAviso, self).__init__()
-        var.dlgAviso = ui_ven_aviso()
+        var.dlgAviso = Ui_ven_aviso()
         var.dlgAviso.setupUi(self)
-        var.dlgAviso.btn_ok.clicked.connect(events.Eventos.aviso)
+        var.dlgAviso.btn_ok.clicked.connect(self.close)
+        var.lbl_mensaje.setText("Mensaje por defecto")
 
 
 class DialogSalir(QtWidgets.QDialog):
     def __init__(self):
         super(DialogSalir, self).__init__()
-        var.dlgSalir = ui_ven_salir()
+        var.dlgSalir = Ui_ven_confirmacion()
         var.dlgSalir.setupUi(self)
-        var.dlgSalir.btnbox_salir.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(events.Eventos.salir)
+        var.dlgSalir.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(events.Eventos.salir)
+        var.lbl_pregunta.setText("Seguro/a que quiere salir?")
 
+
+class DialogConfirmar(QtWidgets.QDialog):
+    def __init__(self):
+        super(DialogConfirmar, self).__init__()
+        var.dlgConfirmacion = Ui_ven_confirmacion()
+        var.dlgConfirmacion.setupUi(self)
+        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(self.setConfirmacion)
+        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.setConfirmacion)
+        var.lbl_pregunta.setText("Confirmar")
+
+    def setConfirmacion(self, confirma: bool):
+        var.confirmacion = confirma
+        self.close()
 
 class DialogCalendar(QtWidgets.QDialog):
     def __init__(self):
@@ -47,6 +62,7 @@ class Main(QtWidgets.QMainWindow):
         var.dlgAviso = DialogAviso()
         var.dlgSalir = DialogSalir()
         var.dlgCalendar = DialogCalendar()
+        var.dlgConfirmacion = DialogConfirmar()
         var.dni_valido = False
 
         # Arrays con los botones chk y rbt

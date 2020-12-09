@@ -21,6 +21,18 @@ class Eventos:
             print('Error %s' % str(error))
 
     @staticmethod
+    def confirmar(mensaje: str):
+        """
+        Funcion para llamar al dialogo de confirmacion y recoger el resultado
+        :return:
+        """
+        try:
+            var.dlgConfirmacion.show()
+            var.lbl_pregunta.setText(mensaje)
+        except Exception as error:
+            print('Error: %s' % str(error))
+
+    @staticmethod
     def aviso(mensaje: str):
         """
         Modulo para cerrar el programa
@@ -28,9 +40,7 @@ class Eventos:
         """
         try:
             var.dlgAviso.show()
-            var.dlgAviso.lbl_mensaje.setText(mensaje)
-            if var.dlgAviso.btn_ok.clicked():
-                var.dlgAviso.close()
+            var.lbl_mensaje.setText(mensaje)
         except Exception as error:
             print('Error: %s' % str(error))
 

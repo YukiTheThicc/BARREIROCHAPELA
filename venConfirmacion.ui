@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ven_salir</class>
- <widget class="QDialog" name="ven_salir">
+ <class>ven_confirmacion</class>
+ <widget class="QDialog" name="ven_confirmacion">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,12 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Quiere salir?</string>
+   <string>Está seguro/a?</string>
   </property>
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QDialogButtonBox" name="btnbox_salir">
+  <widget class="QDialogButtonBox" name="btnbox_confirmar">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -25,6 +25,9 @@
      <height>32</height>
     </rect>
    </property>
+   <property name="locale">
+    <locale language="French" country="France"/>
+   </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
@@ -32,11 +35,11 @@
     <set>QDialogButtonBox::No|QDialogButtonBox::Yes</set>
    </property>
   </widget>
-  <widget class="QLabel" name="lbl_presalir">
+  <widget class="QLabel" name="lbl_pregunta">
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>10</y>
+     <y>20</y>
      <width>161</width>
      <height>21</height>
     </rect>
@@ -50,7 +53,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Seguro que quiere salir?</string>
+    <string>Está seguro/a?</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -87,9 +90,9 @@
  </resources>
  <connections>
   <connection>
-   <sender>btnbox_salir</sender>
+   <sender>btnbox_confirmar</sender>
    <signal>accepted()</signal>
-   <receiver>ven_salir</receiver>
+   <receiver>ven_confirmacion</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -103,9 +106,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnbox_salir</sender>
+   <sender>btnbox_confirmar</sender>
    <signal>rejected()</signal>
-   <receiver>ven_salir</receiver>
+   <receiver>ven_confirmacion</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

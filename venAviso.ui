@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dlgAvisos</class>
- <widget class="QDialog" name="dlgAvisos">
+ <class>ven_aviso</class>
+ <widget class="QDialog" name="ven_aviso">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>

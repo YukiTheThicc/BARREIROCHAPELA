@@ -199,9 +199,12 @@ class Clientes():
         '''
         try:
             dni = var.ui.edit_dni.text()
-            conexion.Conexion.bajaCli(dni)
-            conexion.Conexion.mostrarClientes()
-            Clientes.limpiarCli()
+            if self.resValidarDni(dni):
+                events.Eventos.confirmar("Esta seguro/a que quiere borrar?")
+                if var.confirmacion:
+                    conexion.Conexion.bajaCli(dni)
+                    conexion.Conexion.mostrarClientes()
+                    Clientes.limpiarCli()
         except Exception as error:
             print('Error eliminando clientes: %s ' % str(error))
 
