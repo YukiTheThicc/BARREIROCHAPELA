@@ -57,7 +57,7 @@ class DialogCalendar(QtWidgets.QDialog):
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
-        var.ui = ui_ven_principal()
+        var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
         var.dlgAviso = DialogAviso()
         var.dlgSalir = DialogSalir()

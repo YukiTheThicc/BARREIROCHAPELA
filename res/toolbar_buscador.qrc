@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="icono">
+    <file>img/carpeta.png</file>
+  </qresource>
+</RCC>
