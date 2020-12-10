@@ -192,24 +192,23 @@ class Clientes():
             print('Error cargar clientes: %s ' % str(error))
 
     @staticmethod
-    def bajaCliente(self):
+    def bajaCliente():
         '''
         módulos para dar de baja un cliente
         :return:
         '''
         try:
             dni = var.ui.edit_dni.text()
-            if self.resValidarDni(dni):
-                events.Eventos.confirmar("Esta seguro/a que quiere borrar?")
-                if var.confirmacion:
-                    conexion.Conexion.bajaCli(dni)
-                    conexion.Conexion.mostrarClientes()
-                    Clientes.limpiarCli()
+            events.Eventos.confirmar("Esta seguro/a que quiere borrar?")
+            if var.confirmacion:
+                conexion.Conexion.bajaCli(dni)
+                conexion.Conexion.mostrarClientes()
+                Clientes.limpiarCli()
         except Exception as error:
             print('Error eliminando clientes: %s ' % str(error))
 
     @staticmethod
-    def modifCliente(self):
+    def modifCliente():
         """
         módulos para dar de modificar datos de un cliente
         :return:

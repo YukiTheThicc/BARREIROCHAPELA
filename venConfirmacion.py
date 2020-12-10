@@ -10,8 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import var
-
 
 class Ui_ven_confirmacion(object):
     def setupUi(self, ven_confirmacion):
@@ -24,16 +22,16 @@ class Ui_ven_confirmacion(object):
         self.btnbox_confirmar.setOrientation(QtCore.Qt.Horizontal)
         self.btnbox_confirmar.setStandardButtons(QtWidgets.QDialogButtonBox.No|QtWidgets.QDialogButtonBox.Yes)
         self.btnbox_confirmar.setObjectName("btnbox_confirmar")
-        var.lbl_pregunta = QtWidgets.QLabel(ven_confirmacion)
-        var.lbl_pregunta.setGeometry(QtCore.QRect(110, 20, 161, 21))
+        self.lbl_pregunta = QtWidgets.QLabel(ven_confirmacion)
+        self.lbl_pregunta.setGeometry(QtCore.QRect(110, 10, 161, 41))
         font = QtGui.QFont()
         font.setFamily("Yu Gothic UI Semibold")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
-        var.lbl_pregunta.setFont(font)
-        var.lbl_pregunta.setAlignment(QtCore.Qt.AlignCenter)
-        var.lbl_pregunta.setObjectName("lbl_pregunta")
+        self.lbl_pregunta.setFont(font)
+        self.lbl_pregunta.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_pregunta.setObjectName("lbl_pregunta")
         self.lbl_iwarn = QtWidgets.QLabel(ven_confirmacion)
         self.lbl_iwarn.setGeometry(QtCore.QRect(30, 20, 61, 61))
         self.lbl_iwarn.setMinimumSize(QtCore.QSize(51, 0))
@@ -50,5 +48,5 @@ class Ui_ven_confirmacion(object):
     def retranslateUi(self, ven_confirmacion):
         _translate = QtCore.QCoreApplication.translate
         ven_confirmacion.setWindowTitle(_translate("ven_confirmacion", "Está seguro/a?"))
-        var.lbl_pregunta.setText(_translate("ven_confirmacion", "Está seguro/a?"))
+        self.lbl_pregunta.setText(_translate("ven_confirmacion", "Está seguro/a?"))
 import avisosalir_rc
