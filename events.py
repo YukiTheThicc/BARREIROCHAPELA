@@ -21,6 +21,22 @@ class Eventos:
             print('Error %s' % str(error))
 
     @staticmethod
+    def abrir_buscador():
+        try:
+            var.dlgBuscador.show()
+        except Exception as error:
+            print('Error abrir explorador: %s ' % str(error))
+
+    @staticmethod
+    def abrir_impresora():
+        try:
+            var.dlgImprimir.setWindowTitle('Imprimir')
+            var.dlgImprimir.setModal(True)
+            var.dlgImprimir.show()
+        except Exception as error:
+            print('Error abrir imprimr: %s ' % str(error))
+
+    @staticmethod
     def confirmar(mensaje: str):
         """
         Funcion para llamar al dialogo de confirmacion y recoger el resultado

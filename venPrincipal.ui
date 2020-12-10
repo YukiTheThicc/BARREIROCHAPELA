@@ -2367,7 +2367,20 @@
     </property>
     <addaction name="actionSalir"/>
    </widget>
+   <widget class="QMenu" name="menuAcerca_de">
+    <property name="title">
+     <string>Acerca de</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuInformes">
+    <property name="title">
+     <string>Informes</string>
+    </property>
+    <addaction name="actionInforme_de_Clientes"/>
+   </widget>
    <addaction name="menuArchivo"/>
+   <addaction name="menuInformes"/>
+   <addaction name="menuAcerca_de"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -2382,6 +2395,9 @@
    </attribute>
    <addaction name="actionImpresora"/>
    <addaction name="actionBuscador"/>
+   <addaction name="actionbackup"/>
+   <addaction name="separator"/>
+   <addaction name="actionsalir"/>
   </widget>
   <action name="actionSalir">
    <property name="text">
@@ -2412,18 +2428,43 @@
     <string>Buscador</string>
    </property>
   </action>
+  <action name="actionbackup">
+   <property name="icon">
+    <iconset resource="res/toolbar_backup.qrc">
+     <normaloff>:/icono/img/backup.png</normaloff>:/icono/img/backup.png</iconset>
+   </property>
+   <property name="text">
+    <string>backup</string>
+   </property>
+  </action>
+  <action name="actionsalir">
+   <property name="icon">
+    <iconset resource="res/toolbar_salir.qrc">
+     <normaloff>:/icono/img/salir.png</normaloff>:/icono/img/salir.png</iconset>
+   </property>
+   <property name="text">
+    <string>salir</string>
+   </property>
+  </action>
+  <action name="actionInforme_de_Clientes">
+   <property name="text">
+    <string>Informe de Clientes</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="res/toolbar_buscador.qrc"/>
+  <include location="res/toolbar_salir.qrc"/>
+  <include location="res/toolbar_backup.qrc"/>
   <include location="res/toolbar_impresora.qrc"/>
  </resources>
  <connections/>
  <buttongroups>
+  <buttongroup name="grp_rbt_sex"/>
   <buttongroup name="grp_chk_pago">
    <property name="exclusive">
     <bool>false</bool>
    </property>
   </buttongroup>
-  <buttongroup name="grp_rbt_sex"/>
  </buttongroups>
 </ui>

@@ -1,3 +1,5 @@
+from PyQt5 import QtPrintSupport
+
 import clients
 import conexion
 import events
@@ -9,6 +11,7 @@ from venAviso import *
 from venCalendar import *
 from venPrincipal import *
 from venConfirmacion import *
+from impresora import *
 
 
 class DialogAviso(QtWidgets.QDialog):
@@ -42,6 +45,7 @@ class DialogConfirmar(QtWidgets.QDialog):
         var.confirmacion = confirma
         self.close()
 
+
 class DialogCalendar(QtWidgets.QDialog):
     def __init__(self):
         super(DialogCalendar, self).__init__()
@@ -54,6 +58,18 @@ class DialogCalendar(QtWidgets.QDialog):
         var.dlgCalendar.calendar.clicked.connect(clients.Clientes.cargarFecha)
 
 
+class DialogBuscador(QtWidgets.QFileDialog):
+    def __init__(self):
+        super(DialogBuscador, self).__init__()
+        self.setWindowTitle('Abrir Archivo')
+        self.setModal(True)
+
+
+class DialogImpresora(QtPrintSupport.QPrintDialog):
+    def __init__(self):
+        super(DialogImpresora, self).__init__()
+
+
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
@@ -63,6 +79,8 @@ class Main(QtWidgets.QMainWindow):
         var.dlgSalir = DialogSalir()
         var.dlgCalendar = DialogCalendar()
         var.dlgConfirmacion = DialogConfirmar()
+        var.dlgBuscador = DialogBuscador()
+        var.dlgImprimir = DialogImpresora()
         var.dni_valido = False
 
         # Arrays con los botones chk y rbt
@@ -113,6 +131,10 @@ class Main(QtWidgets.QMainWindow):
         var.ui.sbox_edad.setMinimum(18)
         # Ponemos el valor maximo de la spinBox
         var.ui.sbox_edad.setMaximum(120)
+
+        var.ui.actionsalir.triggered.connect(events.Eventos.salir)
+        var.ui.actionBuscador.triggered.connect(events.Eventos.abrir_buscador)
+        var.ui.actionImpresora.triggered.connect(events.Eventos.abrir_impresora)
 
         for i in var.rbtSex:
             i.toggled.connect(clients.Clientes.selSexo)
