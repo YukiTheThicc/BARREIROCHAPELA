@@ -11,7 +11,6 @@ from venAviso import *
 from venCalendar import *
 from venPrincipal import *
 from venConfirmacion import *
-from impresora import *
 
 
 class DialogAviso(QtWidgets.QDialog):
@@ -20,6 +19,7 @@ class DialogAviso(QtWidgets.QDialog):
         var.dlgAviso = Ui_ven_aviso()
         var.dlgAviso.setupUi(self)
         var.dlgAviso.btn_ok.clicked.connect(self.close)
+        var.lbl_mensaje = var.dlgAviso.lbl_mensaje
         var.lbl_mensaje.setText("Mensaje por defecto")
 
 
@@ -28,22 +28,19 @@ class DialogSalir(QtWidgets.QDialog):
         super(DialogSalir, self).__init__()
         var.dlgSalir = Ui_ven_confirmacion()
         var.dlgSalir.setupUi(self)
+        var.lbl_pregunta = var.dlgSalir.lbl_pregunta
         var.dlgSalir.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(events.Eventos.salir)
-        var.lbl_pregunta.setText("Seguro/a que quiere salir?")
+        var.lbl_pregunta.setText("")
 
 
-class DialogConfirmar(QtWidgets.QDialog):
+class DialogEliminar(QtWidgets.QDialog):
     def __init__(self):
-        super(DialogConfirmar, self).__init__()
+        super(DialogEliminar, self).__init__()
         var.dlgConfirmacion = Ui_ven_confirmacion()
         var.dlgConfirmacion.setupUi(self)
-        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(self.setConfirmacion)
-        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.setConfirmacion)
-        var.lbl_pregunta.setText("Confirmar")
-
-    def setConfirmacion(self, confirma: bool):
-        var.confirmacion = confirma
-        self.close()
+        self.pregunta = var.dlgConfirmacion.lbl_pregunta
+        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(clients.Clientes.bajaCliente)
+        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
 
 
 class DialogCalendar(QtWidgets.QDialog):
@@ -78,7 +75,7 @@ class Main(QtWidgets.QMainWindow):
         var.dlgAviso = DialogAviso()
         var.dlgSalir = DialogSalir()
         var.dlgCalendar = DialogCalendar()
-        var.dlgConfirmacion = DialogConfirmar()
+        var.dlgConfirmacion = DialogEliminar()
         var.dlgBuscador = DialogBuscador()
         var.dlgImprimir = DialogImpresora()
         var.dni_valido = False
@@ -105,7 +102,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btn_limpiar.clicked.connect(clients.Clientes.limpiarCli)
         # Conecta clicar el boton de eliminar con la funcion que elimina un cliente de la
         # base de datos
-        var.ui.btn_eliminar.clicked.connect(clients.Clientes.bajaCliente)
+        var.ui.btn_eliminar.clicked.connect(events.Eventos.eliminar)
         # Conecta clicar el boton de modificar con la funcion que modifica el cliente con
         # el DNI en el editBox del DNI
         var.ui.btn_modificar.clicked.connect(clients.Clientes.modifCliente)
@@ -118,7 +115,7 @@ class Main(QtWidgets.QMainWindow):
         # tupla entera
         var.ui.tbl_listcli.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         # Carga la comboBox de provincias en blanco
-        events.Eventos.cargarProv()
+        events.Eventos.cargar_prov()
         # Conecta clicar en el boton de racargar con la funcion que recarga todos los clientes en la tabla
         var.ui.btn_recargar.clicked.connect(clients.Clientes.recargar)
         # Conecta clicar en el boton de buscar con la funcion que busca un cliente segun su dni

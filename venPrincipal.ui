@@ -670,7 +670,7 @@
            <item row="5" column="0" colspan="15">
             <layout class="QGridLayout" name="grid_chk_rbt">
              <item row="0" column="2">
-              <widget class="QRadioButton" name="rbt_mas">
+              <widget class="QRadioButton" name="rbt_fem">
                <property name="text">
                 <string>Femenino</string>
                </property>
@@ -716,7 +716,7 @@
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QRadioButton" name="rbt_fem">
+              <widget class="QRadioButton" name="rbt_mas">
                <property name="text">
                 <string>Masculino</string>
                </property>
@@ -2279,7 +2279,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Nombre</string>
+               <string>Apellidos</string>
               </property>
               <property name="font">
                <font>
@@ -2293,7 +2293,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Apellidos</string>
+               <string>Nombre</string>
               </property>
               <property name="font">
                <font>
@@ -2460,11 +2460,11 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="grp_rbt_sex"/>
   <buttongroup name="grp_chk_pago">
    <property name="exclusive">
     <bool>false</bool>
    </property>
   </buttongroup>
+  <buttongroup name="grp_rbt_sex"/>
  </buttongroups>
 </ui>

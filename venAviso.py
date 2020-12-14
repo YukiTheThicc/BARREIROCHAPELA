@@ -10,27 +10,26 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-import var
-
 
 class Ui_ven_aviso(object):
     def setupUi(self, ven_aviso):
         ven_aviso.setObjectName("ven_aviso")
-        ven_aviso.resize(341, 98)
+        ven_aviso.setWindowModality(QtCore.Qt.WindowModal)
+        ven_aviso.resize(294, 98)
         ven_aviso.setModal(True)
         self.btn_ok = QtWidgets.QPushButton(ven_aviso)
-        self.btn_ok.setGeometry(QtCore.QRect(170, 60, 75, 23))
+        self.btn_ok.setGeometry(QtCore.QRect(150, 50, 75, 23))
         self.btn_ok.setObjectName("btn_ok")
-        var.lbl_mensaje = QtWidgets.QLabel(ven_aviso)
-        var.lbl_mensaje.setGeometry(QtCore.QRect(130, 30, 161, 21))
+        self.lbl_mensaje = QtWidgets.QLabel(ven_aviso)
+        self.lbl_mensaje.setGeometry(QtCore.QRect(110, 20, 161, 21))
         font = QtGui.QFont()
         font.setFamily("Yu Gothic UI Semibold")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
-        var.lbl_mensaje.setFont(font)
-        var.lbl_mensaje.setAlignment(QtCore.Qt.AlignCenter)
-        var.lbl_mensaje.setObjectName("lbl_mensaje")
+        self.lbl_mensaje.setFont(font)
+        self.lbl_mensaje.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_mensaje.setObjectName("lbl_mensaje")
         self.lbl_icono = QtWidgets.QLabel(ven_aviso)
         self.lbl_icono.setGeometry(QtCore.QRect(40, 20, 61, 61))
         self.lbl_icono.setMinimumSize(QtCore.QSize(51, 0))
@@ -46,6 +45,6 @@ class Ui_ven_aviso(object):
         _translate = QtCore.QCoreApplication.translate
         ven_aviso.setWindowTitle(_translate("ven_aviso", "Aviso"))
         self.btn_ok.setText(_translate("ven_aviso", "OK"))
-        var.lbl_mensaje.setText(_translate("ven_aviso", "Aviso por defecto"))
+        self.lbl_mensaje.setText(_translate("ven_aviso", "Aviso por defecto"))
 
 import avisosalir_rc

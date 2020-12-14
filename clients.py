@@ -57,7 +57,7 @@ class Clientes():
             if var.ui.rbt_mas.isChecked():
                 var.sex = 'Hombre'
         except Exception as error:
-            print('Error: %s' % str(error))
+            print('Error en selSexo: %s' % str(error))
 
     @staticmethod
     def selPago():
@@ -74,7 +74,7 @@ class Clientes():
             print(var.pay)
             return var.pay
         except Exception as error:
-            print('Error: %s' % str(error))
+            print('Error en selPago: %s' % str(error))
 
     @staticmethod
     def selProv(prov):
@@ -82,7 +82,7 @@ class Clientes():
             global vpro
             vpro = prov
         except Exception as error:
-            print('Error: %s' % str(error))
+            print('Error en selProv: %s' % str(error))
 
     '''
     Abrir la ventana calendario
@@ -93,7 +93,7 @@ class Clientes():
         try:
             var.dlgCalendar.show()
         except Exception as error:
-            print('Error: %s ' % str(error))
+            print('Error en abrirCalendar: %s ' % str(error))
 
     '''
     Este módulo se ejecuta cuando clickeamos en un día del calendar, es decir, clicked.connect de calendar
@@ -106,7 +106,7 @@ class Clientes():
             var.ui.edit_fechaalta.setText(str(data))
             var.dlgCalendar.hide()
         except Exception as error:
-            print('Error cargar fecha: %s ' % str(error))
+            print('Error en cargarFecha: %s ' % str(error))
 
     @staticmethod
     def altaCliente():
@@ -117,37 +117,24 @@ class Clientes():
         try:
             dni = var.ui.edit_dni.text()
             if Clientes.validarDni(dni):
-                newcli = []  # contiene todos los datos
-                clitab = []  # será lo que carguemos en la tablas
-                client = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre,
+                new_client_data = []  # contiene todos los datos
+                edit_text_fields = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre,
                           var.ui.edit_fechaalta, var.ui.edit_dir]
-                k = 0
-                for i in client:
-                    newcli.append(i.text())  # cargamos los valores que hay en los editline
-                    if k < 3:
-                        clitab.append(i.text())
-                        k += 1
-                newcli.append(vpro)
-                newcli.append(var.sex)
-                var.pay2 = Clientes.selPago()
-                newcli.append(var.pay2)
-                if client:
-                    # comprobarmos que no esté vacío lo principal
-                    # aquí empieza como trabajar con la TableWidget
-                    row = 0
-                    column = 0
-                    var.ui.tbl_listcli.insertRow(row)
-                    for registro in clitab:
-                        cell = QtWidgets.QTableWidgetItem(registro)
-                        var.ui.tbl_listcli.setItem(row, column, cell)
-                        column += 1
-                    conexion.Conexion.altaCli(newcli)
+                for i in edit_text_fields:
+                    new_client_data.append(i.text())  # cargamos los valores que hay en los campos
+                new_client_data.append(vpro)
+                new_client_data.append(var.sex)
+                new_client_data.append(Clientes.selPago())
+                new_client_data.append(var.ui.sbox_edad.value())
+                if len(new_client_data) == 9:
+                    conexion.Conexion.altaCli(new_client_data)
                 else:
-                    print('Faltan Datos')
+                    print('El numero de datos a insertar no cuadra')
+
             else:
                 events.Eventos.aviso("El dni no es valido")
         except Exception as error:
-            print('Error cargar clientes en Clients: %s ' % str(error))
+            print('Error en altaCliente: %s ' % str(error))
 
     @staticmethod
     def limpiarCli():
@@ -170,26 +157,25 @@ class Clientes():
             var.ui.lbl_codigo.setText('')
             var.ui.sbox_edad.setValue(18)
         except Exception as error:
-            print('Error limpiar widgets: %s ' % str(error))
+            print('Error en limpiarCliente: %s ' % str(error))
 
     @staticmethod
     def cargarCli():
         '''
-        carga en widgets formulario cliente los datos
-        elegidos en la tabla
+        Carga los datos de un elemento en la tabla en los campos de datos
         :return: none
         '''
         try:
-            fila = var.ui.tbl_listcli.selectedItems()
-            client = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre]
-            if fila:
-                fila = [dato.text() for dato in fila]
+            tupla_elegida = var.ui.tbl_listcli.selectedItems()
+            campos_cliente = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre]
+            if tupla_elegida:
+                tupla_elegida = [dato.text() for dato in tupla_elegida]
             i = 0
-            for i, dato in enumerate(client):
-                dato.setText(fila[i])
+            for i, dato in enumerate(campos_cliente):
+                dato.setText(tupla_elegida[i])
             conexion.Conexion.cargarCliente()
         except Exception as error:
-            print('Error cargar clientes: %s ' % str(error))
+            print('Error en cargarCli: %s ' % str(error))
 
     @staticmethod
     def bajaCliente():
@@ -199,13 +185,11 @@ class Clientes():
         '''
         try:
             dni = var.ui.edit_dni.text()
-            events.Eventos.confirmar("Esta seguro/a que quiere borrar?")
-            if var.confirmacion:
-                conexion.Conexion.bajaCli(dni)
-                conexion.Conexion.mostrarClientes()
-                Clientes.limpiarCli()
+            conexion.Conexion.bajaCli(dni)
+            conexion.Conexion.mostrarClientes()
+            Clientes.limpiarCli()
         except Exception as error:
-            print('Error eliminando clientes: %s ' % str(error))
+            print('Error en bajaCliente: %s ' % str(error))
 
     @staticmethod
     def modifCliente():
@@ -230,7 +214,7 @@ class Clientes():
             conexion.Conexion.mostrarClientes()
 
         except Exception as error:
-            print('Error modificar clientes: %s ' % str(error))
+            print('Error en modifCliente: %s ' % str(error))
 
     @staticmethod
     def recargar():
@@ -239,7 +223,7 @@ class Clientes():
             conexion.Conexion.mostrarClientes()
             print('Recargando...')
         except Exception as error:
-            print('Error recargargando clientes: %s ' % str(error))
+            print('Error en recargar: %s ' % str(error))
 
     @staticmethod
     def buscar():
@@ -250,4 +234,4 @@ class Clientes():
             else:
                 print('Se ha intentado buscar un DNI no valido')
         except Exception as error:
-            print('Error buscando clientes: %s ' % str(error))
+            print('Error en buscar: %s ' % str(error))

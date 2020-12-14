@@ -1,5 +1,6 @@
 import sys
 import var
+from PyQt5 import QtWidgets
 
 
 class Eventos:
@@ -12,6 +13,7 @@ class Eventos:
         """
         try:
             var.dlgSalir.show()
+            var.lbl_pregunta.setText("Seguro/a que quiere salir?")
             if var.dlgSalir.exec_():
                 sys.exit()
             else:
@@ -37,14 +39,14 @@ class Eventos:
             print('Error abrir imprimr: %s ' % str(error))
 
     @staticmethod
-    def confirmar(mensaje: str):
+    def eliminar():
         """
         Funcion para llamar al dialogo de confirmacion y recoger el resultado
         :return:
         """
         try:
             var.dlgConfirmacion.show()
-            var.lbl_pregunta.setText(mensaje)
+            var.dlgConfirmacion.pregunta.setText("Esta seguro/a que quiere borrar?")
         except Exception as error:
             print('Error: %s' % str(error))
 
@@ -61,7 +63,7 @@ class Eventos:
             print('Error: %s' % str(error))
 
     @staticmethod
-    def cargarProv():
+    def cargar_prov():
         '''
         Carga las provincias al iniciar el programa
         :return:
