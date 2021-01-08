@@ -24,7 +24,7 @@ class Conexion():
         return True
 
     @staticmethod
-    def altaCli(cliente):
+    def alta_cliente(cliente):
         '''
         Metodo que crea una instruccion de sql que inserta una tupla en la base de datos
         segun los datos regogidos en el array que se le pasa como argumento.
@@ -46,13 +46,13 @@ class Conexion():
         query.bindValue(':edad', str(cliente[8]))
         if query.exec_():
             print("Inserción Correcta")
-            Conexion.mostrarClientes()
+            Conexion.mostrar_clientes()
             var.ui.lbl_status.setText('Cliente con dni ' + str(cliente[0]) + ' dado de alta')
         else:
             print("Error: ", query.lastError().text())
 
     @staticmethod
-    def cargarCliente():
+    def cargar_cliente():
         '''
         Este metodo carga un cliente desde la base de datos a traves de una query que usa
         el dni que este escrito en el editBox de DNI de la ventana principal.
@@ -85,7 +85,7 @@ class Conexion():
                 var.ui.sbox_edad.setValue(query.value(9))
 
     @staticmethod
-    def mostrarClientes():
+    def mostrar_clientes():
         '''
         Metodo que carga el DNI, nombre y apellidos en la tabla de la ventana principal.
         :return:
@@ -107,7 +107,7 @@ class Conexion():
             print("Error mostrar clientes: ", query.lastError().text())
 
     @staticmethod
-    def bajaCli(dni):
+    def baja_cliente(dni):
         ''''
         Metodo para eliminar cliente. Se llama desde fichero clientes.py
         :return None
@@ -122,7 +122,7 @@ class Conexion():
             print("Error mostrar clientes: ", query.lastError().text())
 
     @staticmethod
-    def modifCli(codigo, newdata):
+    def modif_cliente(codigo, newdata):
         ''''
            modulo para modificar cliente. se llama desde fichero clientes.py
            :return None
@@ -149,7 +149,7 @@ class Conexion():
             print("Error modificar cliente: ", query.lastError().text())
 
     @staticmethod
-    def buscarCliente(dni):
+    def buscar_cliente(dni):
         query = QtSql.QSqlQuery()
         query.prepare('select * from clientes where dni = :dni')
         query.bindValue(':dni', dni)
@@ -159,5 +159,78 @@ class Conexion():
                 var.ui.tbl_listcli.setItem(0, 0, QtWidgets.QTableWidgetItem(dni))
                 var.ui.tbl_listcli.setItem(0, 1, QtWidgets.QTableWidgetItem(query.value(2)))
                 var.ui.tbl_listcli.setItem(0, 2, QtWidgets.QTableWidgetItem(query.value(3)))
+        else:
+            print("Error buscando cliente: ", query.lastError().text())
+
+    # ======================================CONEXIONES PARA LA TABLA DE PRODUCTOS=======================================
+
+    @staticmethod
+    def actualizar_tabla_pro():
+        index = 0
+        query = QtSql.QSqlQuery()
+        query.prepare('select codigo, nombre, precio_unidad from articulos')
+        if query.exec_():
+            while query.next():
+                codigo = query.value(0)
+                nombre = query.value(1)
+                precio = query.value(2)
+                var.ui.tbl_pro_tabla.setRowCount(index + 1)  # crea la fila y a continuación mete los datos
+                var.ui.tbl_pro_tabla.setItem(index, 0, QtWidgets.QTableWidgetItem(str(codigo)))
+                var.ui.tbl_pro_tabla.setItem(index, 1, QtWidgets.QTableWidgetItem(nombre))
+                var.ui.tbl_pro_tabla.setItem(index, 2, QtWidgets.QTableWidgetItem(str(precio)))
+                index += 1
+        else:
+            print("Error al actualizar la tabla de productos: ", query.lastError().text())
+
+    @staticmethod
+    def alta_producto(producto: [str, float]):
+        query = QtSql.QSqlQuery()
+        query.prepare('insert into articulos (nombre, precio_unidad)'
+                      'VALUES (:nombre, :precio_unidad)')
+        query.bindValue(':nombre', str(producto[0]))
+        query.bindValue(':precio_unidad', round(producto[1], 2))
+        if query.exec_():
+            print("Inserción de Producto Correcta")
+            Conexion.actualizar_tabla_pro()
+            var.ui.lbl_status.setText('El producto ' + str(producto[0]) + ' ha sido dado de alta')
+        else:
+            print("Error: ", query.lastError().text())
+
+    @staticmethod
+    def baja_producto(codigo):
+        query = QtSql.QSqlQuery()
+        query.prepare('delete from articulos where codigo = :codigo')
+        query.bindValue(':codigo', codigo)
+        if query.exec_():
+            var.ui.lbl_status.setText('Producto de codigo ' + codigo + ' dado de baja')
+        else:
+            print("Error dando de baja a un prodcuto: ", query.lastError().text())
+
+    @staticmethod
+    def modif_producto(codigo, nuevos_datos):
+        query = QtSql.QSqlQuery()
+        codigo = int(codigo)
+        query.prepare('update articulos set nombre=:nombre, precio_unidad=:precio '
+                      'where codigo=:codigo')
+        query.bindValue(':codigo', int(codigo))
+        query.bindValue(':nombre', nuevos_datos[0])
+        query.bindValue(':precio', round(nuevos_datos[1], 2))
+        if query.exec_():
+            print('Producto modificado')
+            var.ui.lbl_status.setText('El producto  ' + str(nuevos_datos[0]) + ' ha sido modificado')
+        else:
+            print("Error modificar producto conexion: ", query.lastError().text())
+
+    @staticmethod
+    def buscar_producto(nombre):
+        query = QtSql.QSqlQuery()
+        query.prepare('select * from articulos where nombre = :nombre')
+        query.bindValue(':nombre', nombre)
+        if query.exec_():
+            while query.next():
+                var.ui.tbl_listcli.setRowCount(1)
+                var.ui.tbl_listcli.setItem(0, 0, QtWidgets.QTableWidgetItem(query.value(0)))
+                var.ui.tbl_listcli.setItem(0, 1, QtWidgets.QTableWidgetItem(nombre))
+                var.ui.tbl_listcli.setItem(0, 2, QtWidgets.QTableWidgetItem(query.value(2)))
         else:
             print("Error buscando cliente: ", query.lastError().text())

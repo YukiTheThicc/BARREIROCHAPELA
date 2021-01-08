@@ -1,5 +1,6 @@
 import sys
 import var
+from productos import productos as p
 from PyQt5 import QtWidgets
 
 
@@ -45,8 +46,8 @@ class Eventos:
         :return:
         """
         try:
-            var.dlgConfirmacion.show()
-            var.dlgConfirmacion.pregunta.setText("Esta seguro/a que quiere borrar?")
+            var.dlgEliminarCliente.show()
+            var.dlgEliminarCliente.pregunta.setText("Esta seguro/a que quiere borrar?")
         except Exception as error:
             print('Error: %s' % str(error))
 
@@ -74,3 +75,49 @@ class Eventos:
                 var.ui.cmb_prov.addItem(i)
         except Exception as error:
             print('Error %s' % str(error))
+
+    @staticmethod
+    def about():
+        try:
+            var.dlgAbout.show()
+        except Exception as error:
+            print('Error en about events %s' % str(error))
+
+# =============================================== EVENTOS PARA PRODUCTOS ===============================================
+
+    @staticmethod
+    def eliminar_producto():
+        """
+        Funcion para llamar al dialogo de confirmacion y recoger el resultado
+        :return:
+        """
+        try:
+            codigo = var.ui.lbl_pro_muestra_codigo.text()
+            if codigo != '':
+                var.dlgEliminarProducto.show()
+                var.dlgEliminarProducto.pregunta.setText("Esta seguro/a que quiere borrar\n"
+                                                         "este producto?")
+            else:
+                Eventos.aviso("Seleccione un producto")
+        except Exception as error:
+            print('Error: %s' % str(error))
+
+    @staticmethod
+    def modificar_producto():
+        """
+        Funcion para llamar al dialogo de confirmacion y recoger el resultado
+        :return:
+        """
+        try:
+            codigo = var.ui.lbl_pro_muestra_codigo.text()
+            nombre = var.ui.lbl_pro_nombre.text()
+            print(nombre)
+            if codigo != '':
+                if nombre != '':
+                    p.Productos.modif_producto()
+                else:
+                    Eventos.aviso("Necesita un nombre")
+            else:
+                Eventos.aviso("Seleccione un producto")
+        except Exception as error:
+            print('Error en modificar_producto events: %s' % str(error))

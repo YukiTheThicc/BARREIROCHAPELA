@@ -1,6 +1,7 @@
 from PyQt5 import QtPrintSupport
 
 import clients
+from productos import prep_productos as p
 import conexion
 import events
 import sys
@@ -11,6 +12,7 @@ from venAviso import *
 from venCalendar import *
 from venPrincipal import *
 from venConfirmacion import *
+from venAcercaDe import *
 
 
 class DialogAviso(QtWidgets.QDialog):
@@ -33,14 +35,15 @@ class DialogSalir(QtWidgets.QDialog):
         var.lbl_pregunta.setText("")
 
 
-class DialogEliminar(QtWidgets.QDialog):
+class DialogEliminarCliente(QtWidgets.QDialog):
     def __init__(self):
-        super(DialogEliminar, self).__init__()
-        var.dlgConfirmacion = Ui_ven_confirmacion()
-        var.dlgConfirmacion.setupUi(self)
-        self.pregunta = var.dlgConfirmacion.lbl_pregunta
-        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(clients.Clientes.bajaCliente)
-        var.dlgConfirmacion.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
+        super(DialogEliminarCliente, self).__init__()
+        var.dlgEliminarCliente = Ui_ven_confirmacion()
+        var.dlgEliminarCliente.setupUi(self)
+        self.pregunta = var.dlgEliminarCliente.lbl_pregunta
+        var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            clients.Clientes.bajaCliente)
+        var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
 
 
 class DialogCalendar(QtWidgets.QDialog):
@@ -67,15 +70,24 @@ class DialogImpresora(QtPrintSupport.QPrintDialog):
         super(DialogImpresora, self).__init__()
 
 
+class DialogAbout(QtWidgets.QDialog):
+    def __init__(self):
+        super(DialogAbout, self).__init__()
+        var.dlgAviso = Ui_ven_acercade()
+        var.dlgAviso.setupUi(self)
+        var.dlgAviso.btn_ok.clicked.connect(self.close)
+
+
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
         super(Main, self).__init__()
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
+        var.dlgAbout = DialogAbout()
         var.dlgAviso = DialogAviso()
         var.dlgSalir = DialogSalir()
         var.dlgCalendar = DialogCalendar()
-        var.dlgConfirmacion = DialogEliminar()
+        var.dlgEliminarCliente = DialogEliminarCliente()
         var.dlgBuscador = DialogBuscador()
         var.dlgImprimir = DialogImpresora()
         var.dni_valido = False
@@ -121,7 +133,7 @@ class Main(QtWidgets.QMainWindow):
         # Conecta clicar en el boton de buscar con la funcion que busca un cliente segun su dni
         var.ui.btn_buscar.clicked.connect(clients.Clientes.buscar)
         var.ui.statusbar.addPermanentWidget(var.ui.lbl_status, 1)
-        var.ui.lbl_status.setText('Gestor Clientes')
+        var.ui.lbl_status.setText('Buenos Días')
         # Ponemos valor 18 por defecto en la spinBox de edad
         var.ui.sbox_edad.setValue(18)
         # Ponemos el valor minimo de la spinBox
@@ -133,6 +145,11 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionBuscador.triggered.connect(events.Eventos.abrir_buscador)
         var.ui.actionImpresora.triggered.connect(events.Eventos.abrir_impresora)
 
+        # ---------------------------PARA EXAMEN-------------------------
+        p.PrepProductos.crear_conexiones()
+
+        var.ui.action_about.triggered.connect(events.Eventos.about)
+        # ---------------------------FIN DE PARA EXAMEN-------------------------
         for i in var.rbtSex:
             i.toggled.connect(clients.Clientes.selSexo)
         for i in var.chkPago:
@@ -141,7 +158,8 @@ class Main(QtWidgets.QMainWindow):
         # Conexion con la base de datos
         conexion.Conexion.db_connect(var.filebd)
         # Muestra en la tabla los clientes guardados en la base de datos
-        conexion.Conexion.mostrarClientes()
+        conexion.Conexion.mostrar_clientes()
+        conexion.Conexion.actualizar_tabla_pro()
 
     def closeEvent(self, event):
         if event:

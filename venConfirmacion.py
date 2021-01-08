@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ven_confirmacion(object):
     def setupUi(self, ven_confirmacion):
         ven_confirmacion.setObjectName("ven_confirmacion")
-        ven_confirmacion.setWindowModality(QtCore.Qt.WindowModal)
+        ven_confirmacion.setWindowModality(QtCore.Qt.ApplicationModal)
         ven_confirmacion.resize(350, 98)
         ven_confirmacion.setModal(True)
         self.btnbox_confirmar = QtWidgets.QDialogButtonBox(ven_confirmacion)

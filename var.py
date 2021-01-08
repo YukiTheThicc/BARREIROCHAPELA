@@ -1,10 +1,12 @@
 global ui
 global rbtSex
 global chkPago
+global dlgAbout
 global dlgAviso
 global dlgSalir
 global dlgCalendar
-global dlgConfirmacion
+global dlgEliminarCliente
+global dlgEliminarProducto
 global dlgImprimir
 global dlgBuscador
 global sex

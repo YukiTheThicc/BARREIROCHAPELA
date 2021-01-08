@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ven_aviso(object):
     def setupUi(self, ven_aviso):
         ven_aviso.setObjectName("ven_aviso")
-        ven_aviso.setWindowModality(QtCore.Qt.WindowModal)
+        ven_aviso.setWindowModality(QtCore.Qt.ApplicationModal)
         ven_aviso.resize(294, 98)
         ven_aviso.setModal(True)
         self.btn_ok = QtWidgets.QPushButton(ven_aviso)
@@ -46,5 +46,4 @@ class Ui_ven_aviso(object):
         ven_aviso.setWindowTitle(_translate("ven_aviso", "Aviso"))
         self.btn_ok.setText(_translate("ven_aviso", "OK"))
         self.lbl_mensaje.setText(_translate("ven_aviso", "Aviso por defecto"))
-
 import avisosalir_rc

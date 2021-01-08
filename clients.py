@@ -71,7 +71,6 @@ class Clientes():
                     var.pay.append('Tarjeta')
                 if data.isChecked() and i == 2:
                     var.pay.append('Transferencia')
-            print(var.pay)
             return var.pay
         except Exception as error:
             print('Error en selPago: %s' % str(error))
@@ -127,7 +126,7 @@ class Clientes():
                 new_client_data.append(Clientes.selPago())
                 new_client_data.append(var.ui.sbox_edad.value())
                 if len(new_client_data) == 9:
-                    conexion.Conexion.altaCli(new_client_data)
+                    conexion.Conexion.alta_cliente(new_client_data)
                 else:
                     print('El numero de datos a insertar no cuadra')
 
@@ -173,7 +172,7 @@ class Clientes():
             i = 0
             for i, dato in enumerate(campos_cliente):
                 dato.setText(tupla_elegida[i])
-            conexion.Conexion.cargarCliente()
+            conexion.Conexion.cargar_cliente()
         except Exception as error:
             print('Error en cargarCli: %s ' % str(error))
 
@@ -185,8 +184,8 @@ class Clientes():
         '''
         try:
             dni = var.ui.edit_dni.text()
-            conexion.Conexion.bajaCli(dni)
-            conexion.Conexion.mostrarClientes()
+            conexion.Conexion.baja_cliente(dni)
+            conexion.Conexion.mostrar_clientes()
             Clientes.limpiarCli()
         except Exception as error:
             print('Error en bajaCliente: %s ' % str(error))
@@ -206,13 +205,11 @@ class Clientes():
             newdata.append(var.ui.cmb_prov.currentText())
             newdata.append(var.sex)
             var.pay = Clientes.selPago()
-            print(var.pay)
             newdata.append(var.pay)
             newdata.append(var.ui.sbox_edad.value())
             cod = var.ui.lbl_codigo.text()
-            conexion.Conexion.modifCli(cod, newdata)
-            conexion.Conexion.mostrarClientes()
-
+            conexion.Conexion.modif_cliente(cod, newdata)
+            conexion.Conexion.mostrar_clientes()
         except Exception as error:
             print('Error en modifCliente: %s ' % str(error))
 
@@ -220,7 +217,7 @@ class Clientes():
     def recargar():
         try:
             Clientes.limpiarCli()
-            conexion.Conexion.mostrarClientes()
+            conexion.Conexion.mostrar_clientes()
             print('Recargando...')
         except Exception as error:
             print('Error en recargar: %s ' % str(error))
@@ -230,7 +227,7 @@ class Clientes():
         try:
             dni = var.ui.edit_dni.text()
             if Clientes.validarDni(dni):
-                conexion.Conexion.buscarCliente(dni)
+                conexion.Conexion.buscar_cliente(dni)
             else:
                 print('Se ha intentado buscar un DNI no valido')
         except Exception as error:

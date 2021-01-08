@@ -3,7 +3,7 @@
  <class>ven_confirmacion</class>
  <widget class="QDialog" name="ven_confirmacion">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
