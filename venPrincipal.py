@@ -1570,7 +1570,7 @@ class Ui_venPrincipal(object):
         self.paneles.setTabText(self.paneles.indexOf(self.pnl_produc), _translate("venPrincipal", "Productos"))
         self.menuArchivo.setTitle(_translate("venPrincipal", "Archivo"))
         self.menuAcerca_de.setTitle(_translate("venPrincipal", "Ayuda"))
-        self.menuInformes.setTitle(_translate("venPrincipal", "Informes"))
+        self.menuInformes.setTitle(_translate("venPrincipal", "informes"))
         self.toolBar.setWindowTitle(_translate("venPrincipal", "toolBar"))
         self.actionSalir.setText(_translate("venPrincipal", "Salir"))
         self.actionImpresora.setText(_translate("venPrincipal", "Impresora"))

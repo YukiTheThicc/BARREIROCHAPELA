@@ -13,6 +13,7 @@ global sex
 global dni_valido
 global lbl_mensaje
 global lbl_pregunta
+global rep
 confirmacion = False
 pay = []
 pay2 = []
