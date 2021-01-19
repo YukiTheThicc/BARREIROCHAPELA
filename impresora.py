@@ -42,14 +42,15 @@ class Printer():
         except Exception as error:
             print('Error en el pie de informe: %s' % str(error))
 
-    def informe_cliente(self):
+    @staticmethod
+    def informe_cliente():
         try:
             var.rep = canvas.Canvas('informes/listadoclientes.pdf', pagesize=A4)
             Printer.cabecera()
             var.rep.setFont('Helvetica-Bold', size=9)
             textlistado = 'LISTADO DE CLIENTES'
             var.rep.drawString(100, 750, textlistado)
-            var.rep.line(45, 730, 525, 730)
+            var.rep.line(45, 725, 525, 725)
             itemcli = ['COD', 'DNI', 'APELLIDOS', 'NOMBRE', 'FECHA ALTA']
             var.rep.drawString(45, 710, itemcli[0])
             var.rep.drawString(90, 710, itemcli[1])
@@ -58,7 +59,7 @@ class Printer():
             var.rep.drawString(465, 710, itemcli[4])
             var.rep.line(45, 703, 525, 703)
             query = QtSql.QSqlQuery()
-            query.prepare('select codigo, dni, apellidos, nombre fechaalta from clientes order by apellidos, nombre')
+            query.prepare('select codigo, dni, apellidos, nombre, fechalta from clientes order by apellidos, nombre')
             var.rep.setFont('Helvetica', size=10)
             if query.exec_():
                 i = 50

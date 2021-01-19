@@ -1,6 +1,7 @@
 from PyQt5 import QtPrintSupport
 
 import clients
+import impresora
 from productos import prep_productos as p
 import conexion
 import events
@@ -145,11 +146,16 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionBuscador.triggered.connect(events.Eventos.abrir_buscador)
         var.ui.actionImpresora.triggered.connect(events.Eventos.abrir_impresora)
 
-        # ---------------------------PARA EXAMEN-------------------------
+        # --------------------------- PARA EXAMEN -------------------------
         p.PrepProductos.crear_conexiones()
 
         var.ui.action_about.triggered.connect(events.Eventos.about)
-        # ---------------------------FIN DE PARA EXAMEN-------------------------
+        # --------------------------- FIN DE PARA EXAMEN -------------------------
+
+        # --------------------------- PARA INFORMES ---------------------------
+        var.ui.action_i_clientes.triggered.connect(impresora.Printer.informe_cliente)
+        # --------------------------- FIN DE PARA INFORMES ---------------------------
+
         for i in var.rbtSex:
             i.toggled.connect(clients.Clientes.selSexo)
         for i in var.chkPago:
