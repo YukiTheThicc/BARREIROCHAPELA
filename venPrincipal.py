@@ -1493,13 +1493,19 @@ class Ui_venPrincipal(object):
         icon6.addPixmap(QtGui.QPixmap(":/icono/img/salir.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionsalir.setIcon(icon6)
         self.actionsalir.setObjectName("actionsalir")
-        self.actionInforme_de_Clientes = QtWidgets.QAction(venPrincipal)
-        self.actionInforme_de_Clientes.setObjectName("actionInforme_de_Clientes")
+        self.action_i_clientes = QtWidgets.QAction(venPrincipal)
+        self.action_i_clientes.setObjectName("action_i_clientes")
         self.action_about = QtWidgets.QAction(venPrincipal)
         self.action_about.setObjectName("action_about")
+        self.action_i_productos = QtWidgets.QAction(venPrincipal)
+        self.action_i_productos.setObjectName("action_i_productos")
+        self.action_i_facturas = QtWidgets.QAction(venPrincipal)
+        self.action_i_facturas.setObjectName("action_i_facturas")
         self.menuArchivo.addAction(self.actionSalir)
         self.menuAcerca_de.addAction(self.action_about)
-        self.menuInformes.addAction(self.actionInforme_de_Clientes)
+        self.menuInformes.addAction(self.action_i_clientes)
+        self.menuInformes.addAction(self.action_i_productos)
+        self.menuInformes.addAction(self.action_i_facturas)
         self.menubar.addAction(self.menuArchivo.menuAction())
         self.menubar.addAction(self.menuInformes.menuAction())
         self.menubar.addAction(self.menuAcerca_de.menuAction())
@@ -1510,7 +1516,7 @@ class Ui_venPrincipal(object):
         self.toolBar.addAction(self.actionsalir)
 
         self.retranslateUi(venPrincipal)
-        self.paneles.setCurrentIndex(2)
+        self.paneles.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(venPrincipal)
 
     def retranslateUi(self, venPrincipal):
@@ -1570,7 +1576,7 @@ class Ui_venPrincipal(object):
         self.paneles.setTabText(self.paneles.indexOf(self.pnl_produc), _translate("venPrincipal", "Productos"))
         self.menuArchivo.setTitle(_translate("venPrincipal", "Archivo"))
         self.menuAcerca_de.setTitle(_translate("venPrincipal", "Ayuda"))
-        self.menuInformes.setTitle(_translate("venPrincipal", "informes"))
+        self.menuInformes.setTitle(_translate("venPrincipal", "Informes"))
         self.toolBar.setWindowTitle(_translate("venPrincipal", "toolBar"))
         self.actionSalir.setText(_translate("venPrincipal", "Salir"))
         self.actionImpresora.setText(_translate("venPrincipal", "Impresora"))
@@ -1579,8 +1585,10 @@ class Ui_venPrincipal(object):
         self.actionBuscador.setToolTip(_translate("venPrincipal", "Buscador"))
         self.actionbackup.setText(_translate("venPrincipal", "backup"))
         self.actionsalir.setText(_translate("venPrincipal", "salir"))
-        self.actionInforme_de_Clientes.setText(_translate("venPrincipal", "Informe de Clientes"))
+        self.action_i_clientes.setText(_translate("venPrincipal", "Informe de Clientes"))
         self.action_about.setText(_translate("venPrincipal", "About"))
+        self.action_i_productos.setText(_translate("venPrincipal", "Informe de Productos"))
+        self.action_i_facturas.setText(_translate("venPrincipal", "Informe de Facturas"))
 import toolbar_backup_rc
 import toolbar_buscador_rc
 import toolbar_impresora_rc

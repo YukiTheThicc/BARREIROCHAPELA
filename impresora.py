@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from PyQt5 import QtSql
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 import os
@@ -47,7 +48,29 @@ class Printer():
             Printer.cabecera()
             var.rep.setFont('Helvetica-Bold', size=9)
             textlistado = 'LISTADO DE CLIENTES'
-            var.rep.drawString(100, 750, 'Listado Clientes')
+            var.rep.drawString(100, 750, textlistado)
+            var.rep.line(45, 730, 525, 730)
+            itemcli = ['COD', 'DNI', 'APELLIDOS', 'NOMBRE', 'FECHA ALTA']
+            var.rep.drawString(45, 710, itemcli[0])
+            var.rep.drawString(90, 710, itemcli[1])
+            var.rep.drawString(180, 710, itemcli[2])
+            var.rep.drawString(325, 710, itemcli[3])
+            var.rep.drawString(465, 710, itemcli[4])
+            var.rep.line(45, 703, 525, 703)
+            query = QtSql.QSqlQuery()
+            query.prepare('select codigo, dni, apellidos, nombre fechaalta from clientes order by apellidos, nombre')
+            var.rep.setFont('Helvetica', size=10)
+            if query.exec_():
+                i = 50
+                j = 690
+                while query.next():
+                    var.rep.drawString(i, j, str(query.value(0)))
+                    var.rep.drawString(i+30, j, str(query.value(1)))
+                    var.rep.drawString(i+130, j, str(query.value(2)))
+                    var.rep.drawString(i+280, j, str(query.value(3)))
+                    var.rep.drawRightString(i+470, j, str(query.value(4)))
+                    j -= 30
+            Printer.pie(textlistado)
             var.rep.save()
             rootPath = ".\\informes"
             cont = 0
