@@ -1,6 +1,6 @@
 from PyQt5 import QtSql
 import var
-from venPrincipal import *
+from ventanas.venPrincipal import *
 
 
 class Conexion():

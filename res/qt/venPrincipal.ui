@@ -426,7 +426,7 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>BARREIROCHAPELA</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -2253,8 +2253,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>997</width>
-              <height>466</height>
+              <width>98</width>
+              <height>28</height>
              </rect>
             </property>
             <widget class="QTableWidget" name="tbl_listcli">
@@ -2358,7 +2358,7 @@
        <attribute name="title">
         <string>Facturacion</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -4720,8 +4720,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>997</width>
-              <height>530</height>
+              <width>98</width>
+              <height>28</height>
              </rect>
             </property>
             <widget class="QTableWidget" name="tbl_pro_tabla">

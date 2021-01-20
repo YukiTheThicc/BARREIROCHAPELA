@@ -1,10 +1,8 @@
-from PyQt5 import QtWidgets
-
 import var
 import events
-from productos import productos as p
+from modulos.productos import productos as p
 
-from venConfirmacion import *
+from ventanas.venConfirmacion import *
 
 
 class DialogEliminarProducto(QtWidgets.QDialog):

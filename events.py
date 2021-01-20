@@ -1,6 +1,11 @@
+from datetime import datetime
+import os
+import shutil
 import sys
+import zipfile
+
 import var
-from productos import productos as p
+from modulos.productos import productos as p
 from PyQt5 import QtWidgets
 
 
@@ -82,6 +87,23 @@ class Eventos:
             var.dlgAbout.show()
         except Exception as error:
             print('Error en about events %s' % str(error))
+
+    @staticmethod
+    def Backup():
+        try:
+            fecha = datetime.today()
+            fecha = fecha.strftime('%Y.%m.%d.%H.%M.%S')
+            copia = (str(fecha) + '_backup.zip')
+            option = QtWidgets.QFileDialog.Options()
+            directorio, filename = var.dlgBuscador.getSaveFileName(None,'Guardar Copia',var.copia,'.zip',options=option)
+            if var.dlgBuscador.Accepted and filename != '':
+                fichzip = zipfile.ZipFile(copia, 'w')
+                fichzip.write(var.filebd, os.path.basename(var.filebd), zipfile.ZIP_DEFLATED)
+                fichzip.close()
+                var.ui.lblstatus.setText('COPIA DE SEGURIDAD DE BASE DE DATOS CREADA')
+                shutil.move(str(copia), str(directorio))
+        except Exception as error:
+            print('Error: %s' % str(error))
 
 # =============================================== EVENTOS PARA PRODUCTOS ===============================================
 

@@ -50,4 +50,3 @@ class Ui_ven_confirmacion(object):
         _translate = QtCore.QCoreApplication.translate
         ven_confirmacion.setWindowTitle(_translate("ven_confirmacion", "Está seguro/a?"))
         self.lbl_pregunta.setText(_translate("ven_confirmacion", "Está seguro/a?"))
-import avisosalir_rc

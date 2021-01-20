@@ -57,4 +57,3 @@ class Ui_ven_acercade(object):
         self.btn_ok.setText(_translate("ven_acercade", "OK"))
         self.lbl_mensaje.setText(_translate("ven_acercade", "Version 0.0.1"))
         self.lbl_minombre.setText(_translate("ven_acercade", "Santiago Barreiro Chapela"))
-import logo_rc
