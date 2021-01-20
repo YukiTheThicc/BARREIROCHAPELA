@@ -1,10 +1,72 @@
 from PyQt5 import QtWidgets
 
+import modulos.clientes.dialog_clientes as dialogs
+import conexion
 import events
-import var, conexion
+import var
 
 
 class Clientes():
+    def __init__(self):
+        self.dlgCalendar = dialogs.DialogCalendar()
+        self.dlgEliminarCliente = dialogs.DialogEliminar()
+        # Arrays con los botones chk y rbt
+        self.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
+        self.sexo = ''
+        self.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
+
+        self.crear_conexiones()
+
+    def crear_conexiones(self):
+        """
+        Metodo que crea las conexiones de los elementos de la iterfaz con los metodos apropiados según los eventos
+        que se se invoquen.
+        :return:
+        """
+        # Conexion de los elementos que crean el dialogo para salir del programa
+        var.ui.btn_salir.clicked.connect(events.Eventos.salir)
+        # Conecta el edit de DNI con la funcion que valida si es correcto o no
+        var.ui.edit_dni.editingFinished.connect(lambda: self.resValidarDni())
+        # Conecta clicar el calendar con la funcion que abre la venCalendar
+        var.ui.btn_calendar.clicked.connect(self.abrirCalendar)
+        # Conecta clicar el boton de guardar con la funcion que guarda el cliente en la
+        # base de datos y lo carga en la tabla de la Interfaz
+        var.ui.btn_guardar.clicked.connect(self.altaCliente)
+        # Conecta clicar el boton de limpiar con la funcion que limpia los campos de la
+        # Interfaz
+        var.ui.btn_limpiar.clicked.connect(self.limpiarCli)
+        # Conecta clicar el boton de eliminar con la funcion que elimina un cliente de la
+        # base de datos
+        var.ui.btn_eliminar.clicked.connect(events.Eventos.eliminar)
+        # Conecta clicar el boton de modificar con la funcion que modifica el cliente con
+        # el DNI en el editBox del DNI
+        var.ui.btn_modificar.clicked.connect(self.modifCliente)
+        # Conecta la apertura de la combo con la funcion que lee lo que seleccione el usuario
+        var.ui.cmb_prov.activated[str].connect(self.selProv)
+        # Conecta clicar un cliente de la lista de clientes con la funcion que carga sus
+        # datos en los campos de la Interfaz
+        var.ui.tbl_listcli.clicked.connect(self.cargarCli)
+        # Conecta que el evento clicar en la tabla conecte con una funcion que seleciona la
+        # tupla entera
+        var.ui.tbl_listcli.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
+        # Carga la comboBox de provincias en blanco
+        events.Eventos.cargar_prov()
+        # Conecta clicar en el boton de racargar con la funcion que recarga todos los clientes en la tabla
+        var.ui.btn_recargar.clicked.connect(self.recargar)
+        # Conecta clicar en el boton de buscar con la funcion que busca un cliente segun su dni
+        var.ui.btn_buscar.clicked.connect(self.buscar)
+        # Ponemos valor 18 por defecto en la spinBox de edad
+        var.ui.sbox_edad.setValue(18)
+        # Ponemos el valor minimo de la spinBox
+        var.ui.sbox_edad.setMinimum(18)
+        # Ponemos el valor maximo de la spinBox
+        var.ui.sbox_edad.setMaximum(120)
+
+        for i in self.rbtSex:
+            i.toggled.connect(self.selSexo)
+        for i in self.chkPago:
+            i.stateChanged.connect(self.selPago)
+
 
     @staticmethod
     def validarDni(dni):
@@ -49,13 +111,12 @@ class Clientes():
             print('Error modulo valido DNI')
             return None
 
-    @staticmethod
-    def selSexo():
+    def selSexo(self):
         try:
             if var.ui.rbt_fem.isChecked():
-                var.sex = 'Mujer'
+                self.sexo = 'Mujer'
             if var.ui.rbt_mas.isChecked():
-                var.sex = 'Hombre'
+                self.sexo = 'Hombre'
         except Exception as error:
             print('Error en selSexo: %s' % str(error))
 
@@ -98,17 +159,15 @@ class Clientes():
     Este módulo se ejecuta cuando clickeamos en un día del calendar, es decir, clicked.connect de calendar
     '''
 
-    @staticmethod
-    def cargarFecha(qDate):
+    def cargarFecha(self, qDate):
         try:
             data = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
             var.ui.edit_fechaalta.setText(str(data))
-            var.dlgCalendar.hide()
+            self.dlgCalendar.hide()
         except Exception as error:
             print('Error en cargarFecha: %s ' % str(error))
 
-    @staticmethod
-    def altaCliente():
+    def altaCliente(self):
         '''
         Cargara los datos de los clientes en la tabla
         :return:
@@ -122,7 +181,7 @@ class Clientes():
                 for i in edit_text_fields:
                     new_client_data.append(i.text())  # cargamos los valores que hay en los campos
                 new_client_data.append(vpro)
-                new_client_data.append(var.sex)
+                new_client_data.append(self.sexo)
                 new_client_data.append(Clientes.selPago())
                 new_client_data.append(var.ui.sbox_edad.value())
                 if len(new_client_data) == 9:
@@ -190,8 +249,7 @@ class Clientes():
         except Exception as error:
             print('Error en bajaCliente: %s ' % str(error))
 
-    @staticmethod
-    def modifCliente():
+    def modifCliente(self):
         """
         módulos para dar de modificar datos de un cliente
         :return:
@@ -203,7 +261,7 @@ class Clientes():
             for i in client:
                 newdata.append(i.text())  # cargamos los valores que hay en los editline
             newdata.append(var.ui.cmb_prov.currentText())
-            newdata.append(var.sex)
+            newdata.append(self.sexo)
             var.pay = Clientes.selPago()
             newdata.append(var.pay)
             newdata.append(var.ui.sbox_edad.value())

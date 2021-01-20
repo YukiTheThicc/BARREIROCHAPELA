@@ -26,13 +26,10 @@ class Main(QtWidgets.QMainWindow):
         var.dlgImprimir = d.DialogImpresora()
         var.dni_valido = False
 
-        # Arrays con los botones chk y rbt
-        var.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
-        var.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
-
         var.ui.statusbar.addPermanentWidget(var.ui.lbl_status, 1)
         var.ui.lbl_status.setText('Buenos Días')
 
+        var.ui.actionSalir.triggered.connect(events.Eventos.salir)
         var.ui.actionsalir.triggered.connect(events.Eventos.salir)
         var.ui.actionBuscador.triggered.connect(events.Eventos.abrir_buscador)
         var.ui.actionImpresora.triggered.connect(events.Eventos.abrir_impresora)
