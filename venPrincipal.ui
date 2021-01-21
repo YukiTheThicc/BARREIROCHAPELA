@@ -546,7 +546,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pnl_client">
        <attribute name="title">
@@ -2358,7 +2358,7 @@
        <attribute name="title">
         <string>Facturacion</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -4571,19 +4571,6 @@
             </size>
            </property>
           </widget>
-         </item>
-         <item row="10" column="15">
-          <spacer name="horizontalSpacer_19">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
          <item row="3" column="5">
           <widget class="QLabel" name="lbl_fac_fecha">

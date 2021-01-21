@@ -167,6 +167,7 @@ class Clientes():
         try:
             tupla_elegida = var.ui.tbl_listcli.selectedItems()
             campos_cliente = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre]
+            var.dni = campos_cliente[0].text()
             if tupla_elegida:
                 tupla_elegida = [dato.text() for dato in tupla_elegida]
             i = 0

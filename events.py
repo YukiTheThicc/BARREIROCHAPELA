@@ -121,3 +121,5 @@ class Eventos:
                 Eventos.aviso("Seleccione un producto")
         except Exception as error:
             print('Error en modificar_producto events: %s' % str(error))
+
+# ============================================ EVENTOS PARA FACTURAS/VENTAS ============================================

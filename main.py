@@ -146,15 +146,17 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionBuscador.triggered.connect(events.Eventos.abrir_buscador)
         var.ui.actionImpresora.triggered.connect(events.Eventos.abrir_impresora)
 
-        # --------------------------- PARA EXAMEN -------------------------
+        # --------------------------- PARA PRODUCTOS -------------------------
         p.PrepProductos.crear_conexiones()
-
         var.ui.action_about.triggered.connect(events.Eventos.about)
-        # --------------------------- FIN DE PARA EXAMEN -------------------------
+        # --------------------------- FIN DE PARA PRODUCTOS -------------------------
 
         # --------------------------- PARA INFORMES ---------------------------
         var.ui.action_i_clientes.triggered.connect(impresora.Printer.informe_cliente)
+        var.ui.action_i_productos.triggered.connect(impresora.Printer.informe_productos)
         # --------------------------- FIN DE PARA INFORMES ---------------------------
+
+        # --------------------------- PARA FACTURAS/VENTAS ---------------------------
 
         for i in var.rbtSex:
             i.toggled.connect(clients.Clientes.selSexo)
