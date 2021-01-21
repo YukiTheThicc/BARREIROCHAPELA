@@ -13,7 +13,7 @@ class Printer():
     @staticmethod
     def cabecera():
         logo = '.\\res\img\logo.jpg'
-        var.rep.setTitle('INFORMES')
+        var.rep.setTitle('INFORME CLIENTES')
         var.rep.setAuthor('Administración')
         var.rep.setFont('Helvetica', size=10)
         var.rep.line(45, 820, 525, 820)
@@ -70,6 +70,45 @@ class Printer():
                     var.rep.drawString(i+130, j, str(query.value(2)))
                     var.rep.drawString(i+280, j, str(query.value(3)))
                     var.rep.drawRightString(i+470, j, str(query.value(4)))
+                    j -= 30
+            Printer.pie(textlistado)
+            var.rep.save()
+            rootPath = ".\\informes"
+            cont = 0
+            for file in os.listdir(rootPath):
+                if file.endswith('.pdf'):
+                    os.startfile("%s/%s" % (rootPath, file))
+                cont = cont + 1
+
+        except Exception as error:
+            print('Error reporcli %s' % str(error))
+
+    @staticmethod
+    def informe_productos():
+        try:
+            var.rep = canvas.Canvas('informes/listadoproducto.pdf', pagesize=A4)
+            Printer.cabecera()
+            var.rep.setFont('Helvetica-Bold', size=9)
+            textlistado = 'LISTADO DE CLIENTES'
+            var.rep.drawString(100, 750, textlistado)
+            var.rep.line(45, 725, 525, 725)
+            itemcli = ['CÓDIGO', 'NOMBRE', 'PRECIO/UNIDAD (€)', 'STOCK']
+            var.rep.drawString(85, 710, itemcli[0])
+            var.rep.drawString(205, 710, itemcli[1])
+            var.rep.drawString(315, 710, itemcli[2])
+            var.rep.drawString(445, 710, itemcli[3])
+            var.rep.line(45, 703, 525, 703)
+            query = QtSql.QSqlQuery()
+            query.prepare('select codigo, nombre, precio_unidad, stock from articulos')
+            var.rep.setFont('Helvetica', size=10)
+            if query.exec_():
+                i = 100
+                j = 690
+                while query.next():
+                    var.rep.drawString(i, j, str(query.value(0)))
+                    var.rep.drawString(i+100, j, str(query.value(1)))
+                    var.rep.drawString(i+240, j, str(query.value(2)))
+                    var.rep.drawString(i+360, j, str(query.value(3)))
                     j -= 30
             Printer.pie(textlistado)
             var.rep.save()
