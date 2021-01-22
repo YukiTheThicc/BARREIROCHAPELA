@@ -46,4 +46,3 @@ class Ui_ven_aviso(object):
         ven_aviso.setWindowTitle(_translate("ven_aviso", "Aviso"))
         self.btn_ok.setText(_translate("ven_aviso", "OK"))
         self.lbl_mensaje.setText(_translate("ven_aviso", "Aviso por defecto"))
-import avisosalir_rc

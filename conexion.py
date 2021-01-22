@@ -238,3 +238,21 @@ class Conexion():
                 var.ui.tbl_listcli.setItem(0, 2, QtWidgets.QTableWidgetItem(query.value(2)))
         else:
             print("Error buscando cliente: ", query.lastError().text())
+
+    # ======================================CONEXIONES PARA LA TABLA DE FACTURAS========================================
+    @staticmethod
+    def alta_fac(dni, fecha, apel):
+        query = QtSql.QSqlQuery()
+        query.prepare('insert into facturas (dni, fecha, apellidos) VALUES (:dni, :fecha, :apellidos )')
+        query.bindValue(':dni', str(dni))
+        query.bindValue(':fecha', str(fecha))
+        query.bindValue(':apellidos', str(apel))
+        if query.exec_():
+            var.ui.lblstatus.setText('Factura Creada')
+        else:
+            print("Error alta factura: ", query.lastError().text())
+        query1 = QtSql.QSqlQuery()
+        query1.prepare('select max(codfac) from facturas')
+        if query1.exec_():
+            while query1.next():
+                var.ui.lblNumFac.setText(str(query1.value(0)))

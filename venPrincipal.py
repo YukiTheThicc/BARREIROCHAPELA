@@ -2430,7 +2430,3 @@ class Ui_venPrincipal(object):
         self.action_about.setText(_translate("venPrincipal", "About"))
         self.action_i_productos.setText(_translate("venPrincipal", "Informe de Productos"))
         self.action_i_facturas.setText(_translate("venPrincipal", "Informe de Facturas"))
-import toolbar_backup_rc
-import toolbar_buscador_rc
-import toolbar_impresora_rc
-import toolbar_salir_rc

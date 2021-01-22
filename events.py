@@ -1,7 +1,6 @@
 import sys
 import var
-from productos import productos as p
-from PyQt5 import QtWidgets
+from modulos import productos as p
 
 
 class Eventos:
