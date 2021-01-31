@@ -2,6 +2,7 @@ from PyQt5 import QtPrintSupport
 
 from modulos import productos as p
 from modulos import clientes as c
+from modulos import facturas as f
 import impresora
 import conexion
 import events
@@ -76,6 +77,7 @@ class Main(QtWidgets.QMainWindow):
 
         c.Clientes.crear_modulo()
         p.Productos.crear_modulo()
+        f.Facturas.crear_modulo()
 
         # Conexion con la base de datos
         conexion.Conexion.db_connect(var.filebd)

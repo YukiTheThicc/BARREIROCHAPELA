@@ -14,7 +14,8 @@ class DialogEliminarCliente(QtWidgets.QDialog):
         var.dlgEliminarCliente = Ui_ven_confirmacion()
         var.dlgEliminarCliente.setupUi(self)
         self.pregunta = var.dlgEliminarCliente.lbl_pregunta
-        var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(Clientes.baja_cliente)
+        var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            Clientes.baja_cliente)
         var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
 
 
@@ -29,7 +30,8 @@ class DialogCalendar(QtWidgets.QDialog):
         var.dlgCalendar.calendar.setSelectedDate((QtCore.QDate(anoactual, mesactual, diaactual)))
         var.dlgCalendar.calendar.clicked.connect(Clientes.cargar_fecha)
 
-class Clientes():
+
+class Clientes:
 
     @staticmethod
     def crear_modulo():
@@ -197,7 +199,7 @@ class Clientes():
             if Clientes.validar_dni(dni):
                 new_client_data = []  # contiene todos los datos
                 edit_text_fields = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre,
-                          var.ui.edit_fechaalta, var.ui.edit_dir]
+                                    var.ui.edit_fechaalta, var.ui.edit_dir]
                 for i in edit_text_fields:
                     new_client_data.append(i.text())  # cargamos los valores que hay en los campos
                 new_client_data.append(vpro)
@@ -312,5 +314,3 @@ class Clientes():
                 print('Se ha intentado buscar un DNI no valido')
         except Exception as error:
             print('Error en buscar: %s ' % str(error))
-
-
