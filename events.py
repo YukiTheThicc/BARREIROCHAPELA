@@ -1,6 +1,7 @@
 import sys
 import var
 from modulos import productos as p
+from modulos.clientes import Clientes
 
 
 class Eventos:
@@ -45,8 +46,8 @@ class Eventos:
         :return:
         """
         try:
-            var.dlgEliminarCliente.show()
-            var.dlgEliminarCliente.pregunta.setText("Esta seguro/a que quiere borrar?")
+            Clientes.dlgEliminarCliente.show()
+            Clientes.dlgEliminarCliente.pregunta.setText("Esta seguro/a que quiere borrar?")
         except Exception as error:
             print('Error: %s' % str(error))
 

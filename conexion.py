@@ -53,11 +53,11 @@ class Conexion():
 
     @staticmethod
     def cargar_cliente():
-        '''
+        """
         Este metodo carga un cliente desde la base de datos a traves de una query que usa
         el dni que este escrito en el editBox de DNI de la ventana principal.
         :return:
-        '''
+        """
         dni = var.ui.edit_dni.text()
         query = QtSql.QSqlQuery()
         query.prepare('select * from clientes where dni = :dni')
@@ -201,6 +201,13 @@ class Conexion():
 
     @staticmethod
     def baja_producto(codigo):
+        """
+
+        :param codigo:
+        :type codigo:
+        :return:
+        :rtype:
+        """
         query = QtSql.QSqlQuery()
         query.prepare('delete from articulos where codigo = :codigo')
         query.bindValue(':codigo', codigo)
@@ -240,8 +247,21 @@ class Conexion():
             print("Error buscando cliente: ", query.lastError().text())
 
     # ======================================CONEXIONES PARA LA TABLA DE FACTURAS========================================
+
     @staticmethod
     def alta_fac(dni, fecha, apel):
+        """
+
+        Metodo que inserta una tupla de facturas en la tabla de facturas
+
+        :param dni: String
+        :param fecha: String
+        :param apel: String
+        :return: None
+
+
+
+        """
         query = QtSql.QSqlQuery()
         query.prepare('insert into facturas (dni, fecha, apellidos) VALUES (:dni, :fecha, :apellidos )')
         query.bindValue(':dni', str(dni))

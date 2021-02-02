@@ -11,30 +11,53 @@ import var
 class DialogEliminarCliente(QtWidgets.QDialog):
     def __init__(self):
         super(DialogEliminarCliente, self).__init__()
-        var.dlgEliminarCliente = Ui_ven_confirmacion()
-        var.dlgEliminarCliente.setupUi(self)
-        self.pregunta = var.dlgEliminarCliente.lbl_pregunta
-        var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(Clientes.baja_cliente)
-        var.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
+        Clientes.dlgEliminarCliente = Ui_ven_confirmacion()
+        Clientes.dlgEliminarCliente.setupUi(self)
+        self.pregunta = Clientes.dlgEliminarCliente.lbl_pregunta
+        Clientes.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            Clientes.baja_cliente)
+        Clientes.dlgEliminarCliente.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
 
 
 class DialogCalendar(QtWidgets.QDialog):
     def __init__(self):
         super(DialogCalendar, self).__init__()
-        var.dlgCalendar = ui_ven_calendar()
-        var.dlgCalendar.setupUi(self)
+        Clientes.dlgCalendar = ui_ven_calendar()
+        Clientes.dlgCalendar.setupUi(self)
         diaactual = datetime.now().day
         mesactual = datetime.now().month
         anoactual = datetime.now().year
-        var.dlgCalendar.calendar.setSelectedDate((QtCore.QDate(anoactual, mesactual, diaactual)))
-        var.dlgCalendar.calendar.clicked.connect(Clientes.cargar_fecha)
+        Clientes.dlgCalendar.calendar.setSelectedDate((QtCore.QDate(anoactual, mesactual, diaactual)))
+        Clientes.dlgCalendar.calendar.clicked.connect(Clientes.cargar_fecha)
 
-class Clientes():
+
+class Clientes:
+    """
+
+
+
+    """
+    dlgCalendar = None
+    dlgEliminarCliente = None
 
     @staticmethod
     def crear_modulo():
-        var.dlgCalendar = DialogCalendar()
-        var.dlgEliminarCliente = DialogEliminarCliente()
+        """
+
+        Metodo que prepara y crea el modulo de clientes
+
+        :return: None
+        :rtype: None
+
+        Se crean las ventanas de diálogo propias del módulo de clientes y las variables de clase de los radiobuttons y
+        los checkboxes. Luego procede a crear todas las conexiones para los eventos de los widgets de la ventana
+        principal con los métodos apropiados.
+        clase
+
+
+        """
+        Clientes.dlgCalendar = DialogCalendar()
+        Clientes.dlgEliminarCliente = DialogEliminarCliente()
 
         # Conexion de los elementos que crean el dialogo para salir del programa
         var.ui.btn_salir.clicked.connect(events.Eventos.salir)
@@ -78,8 +101,8 @@ class Clientes():
         var.ui.sbox_edad.setMaximum(120)
 
         # Arrays con los botones chk y rbt
-        var.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
-        var.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
+        Clientes.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
+        Clientes.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
         for i in var.rbtSex:
             i.toggled.connect(Clientes.sel_sexo)
         for i in var.chkPago:
@@ -169,7 +192,7 @@ class Clientes():
     @staticmethod
     def abrir_calendar():
         try:
-            var.dlgCalendar.show()
+            Clientes.dlgCalendar.show()
         except Exception as error:
             print('Error en abrir_calendar: %s ' % str(error))
 
@@ -182,7 +205,7 @@ class Clientes():
         try:
             data = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
             var.ui.edit_fechaalta.setText(str(data))
-            var.dlgCalendar.hide()
+            Clientes.dlgCalendar.hide()
         except Exception as error:
             print('Error en cargar_fecha: %s ' % str(error))
 
@@ -197,7 +220,7 @@ class Clientes():
             if Clientes.validar_dni(dni):
                 new_client_data = []  # contiene todos los datos
                 edit_text_fields = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre,
-                          var.ui.edit_fechaalta, var.ui.edit_dir]
+                                    var.ui.edit_fechaalta, var.ui.edit_dir]
                 for i in edit_text_fields:
                     new_client_data.append(i.text())  # cargamos los valores que hay en los campos
                 new_client_data.append(vpro)
@@ -312,5 +335,3 @@ class Clientes():
                 print('Se ha intentado buscar un DNI no valido')
         except Exception as error:
             print('Error en buscar: %s ' % str(error))
-
-

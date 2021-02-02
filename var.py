@@ -3,8 +3,6 @@ global ui
 global dlgAbout
 global dlgAviso
 global dlgSalir
-global dlgCalendar
-global dlgEliminarCliente
 global dlgEliminarProducto
 global dlgImprimir
 global dlgBuscador
