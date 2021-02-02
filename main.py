@@ -82,7 +82,7 @@ class Main(QtWidgets.QMainWindow):
         # Conexion con la base de datos
         conexion.Conexion.db_connect(var.filebd)
         # Muestra en la tabla los clientes guardados en la base de datos
-        conexion.Conexion.mostrar_clientes()
+        c.Clientes.db_mostrar_clientes()
         conexion.Conexion.actualizar_tabla_pro()
 
     def closeEvent(self, event):

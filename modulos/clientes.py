@@ -1,14 +1,20 @@
 from datetime import datetime
 
+from PyQt5 import QtSql
+
 from venCalendar import *
 from venConfirmacion import *
 
-import conexion
 import events
 import var
 
 
 class DialogEliminarCliente(QtWidgets.QDialog):
+    """
+
+    Clase de la ventana de diálogo que saltará al intentar eliminar un cliente
+
+    """
     def __init__(self):
         super(DialogEliminarCliente, self).__init__()
         Clientes.dlgEliminarCliente = Ui_ven_confirmacion()
@@ -20,6 +26,11 @@ class DialogEliminarCliente(QtWidgets.QDialog):
 
 
 class DialogCalendar(QtWidgets.QDialog):
+    """
+
+    Clase que define la ventana de diálogo del calendario que se abrirá al pulsar el botón del calendario.
+
+    """
     def __init__(self):
         super(DialogCalendar, self).__init__()
         Clientes.dlgCalendar = ui_ven_calendar()
@@ -34,11 +45,15 @@ class DialogCalendar(QtWidgets.QDialog):
 class Clientes:
     """
 
+    Módulo de clientes: se implementan aquí todas las funciones necesarias para un módulo de clientes funcional.
+
+    :var Clientes.dlgCalendar: Guarda la ventana de diálogo del calendario que se abre al pulsar el botón de fecha.
 
 
     """
     dlgCalendar = None
     dlgEliminarCliente = None
+    chkPago = None
 
     @staticmethod
     def crear_modulo():
@@ -59,53 +74,32 @@ class Clientes:
         Clientes.dlgCalendar = DialogCalendar()
         Clientes.dlgEliminarCliente = DialogEliminarCliente()
 
-        # Conexion de los elementos que crean el dialogo para salir del programa
         var.ui.btn_salir.clicked.connect(events.Eventos.salir)
-        # Conecta el edit de DNI con la funcion que valida si es correcto o no
         var.ui.edit_dni.editingFinished.connect(lambda: Clientes.show_validar_dni())
-        # Conecta clicar el calendar con la funcion que abre la venCalendar
         var.ui.btn_calendar.clicked.connect(Clientes.abrir_calendar)
-        # Conecta clicar el boton de guardar con la funcion que guarda el cliente en la
-        # base de datos y lo carga en la tabla de la Interfaz
         var.ui.btn_guardar.clicked.connect(Clientes.alta_cliente)
-        # Conecta clicar el boton de limpiar con la funcion que limpia los campos de la
-        # Interfaz
         var.ui.btn_limpiar.clicked.connect(Clientes.limpiar_cliente)
-        # Conecta clicar el boton de eliminar con la funcion que elimina un cliente de la
-        # base de datos
         var.ui.btn_eliminar.clicked.connect(events.Eventos.eliminar)
-        # Conecta clicar el boton de modificar con la funcion que modifica el cliente con
-        # el DNI en el editBox del DNI
         var.ui.btn_modificar.clicked.connect(Clientes.modif_cliente)
-        # Conecta la apertura de la combo con la funcion que lee lo que seleccione el usuario
         var.ui.cmb_prov.activated[str].connect(Clientes.sel_pov)
-        # Conecta clicar un cliente de la lista de clientes con la funcion que carga sus
-        # datos en los campos de la Interfaz
         var.ui.tbl_listcli.clicked.connect(Clientes.cargar_cliente)
-        # Conecta que el evento clicar en la tabla conecte con una funcion que seleciona la
-        # tupla entera
         var.ui.tbl_listcli.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
-        # Carga la comboBox de provincias en blanco
         events.Eventos.cargar_prov()
-        # Conecta clicar en el boton de racargar con la funcion que recarga todos los clientes en la tabla
         var.ui.btn_recargar.clicked.connect(Clientes.recargar)
-        # Conecta clicar en el boton de buscar con la funcion que busca un cliente segun su dni
         var.ui.btn_buscar.clicked.connect(Clientes.buscar)
+
         var.ui.statusbar.addPermanentWidget(var.ui.lbl_status, 1)
         var.ui.lbl_status.setText('Buenos Días')
-        # Ponemos valor 18 por defecto en la spinBox de edad
+
         var.ui.sbox_edad.setValue(18)
-        # Ponemos el valor minimo de la spinBox
         var.ui.sbox_edad.setMinimum(18)
-        # Ponemos el valor maximo de la spinBox
         var.ui.sbox_edad.setMaximum(120)
 
-        # Arrays con los botones chk y rbt
         Clientes.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
         Clientes.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
-        for i in var.rbtSex:
+        for i in Clientes.rbtSex:
             i.toggled.connect(Clientes.sel_sexo)
-        for i in var.chkPago:
+        for i in Clientes.chkPago:
             i.stateChanged.connect(Clientes.sel_pago)
 
     @staticmethod
@@ -185,20 +179,12 @@ class Clientes:
         except Exception as error:
             print('Error en sel_pov: %s' % str(error))
 
-    '''
-    Abrir la ventana calendario
-    '''
-
     @staticmethod
     def abrir_calendar():
         try:
             Clientes.dlgCalendar.show()
         except Exception as error:
             print('Error en abrir_calendar: %s ' % str(error))
-
-    '''
-    Este módulo se ejecuta cuando clickeamos en un día del calendar, es decir, clicked.connect de calendar
-    '''
 
     @staticmethod
     def cargar_fecha(qDate):
@@ -228,14 +214,14 @@ class Clientes:
                 new_client_data.append(Clientes.sel_pago())
                 new_client_data.append(var.ui.sbox_edad.value())
                 if len(new_client_data) == 9:
-                    conexion.Conexion.alta_cliente(new_client_data)
+                    Clientes.db_alta_cliente(new_client_data)
                 else:
                     print('El numero de datos a insertar no cuadra')
 
             else:
                 events.Eventos.aviso("El dni no es valido")
         except Exception as error:
-            print('Error en alta_cliente: %s ' % str(error))
+            print('Error en db_alta_cliente: %s ' % str(error))
 
     @staticmethod
     def limpiar_cliente():
@@ -275,9 +261,9 @@ class Clientes:
             i = 0
             for i, dato in enumerate(campos_cliente):
                 dato.setText(tupla_elegida[i])
-            conexion.Conexion.cargar_cliente()
+            Clientes.db_cargar_cliente()
         except Exception as error:
-            print('Error en cargar_cliente: %s ' % str(error))
+            print('Error en db_cargar_cliente: %s ' % str(error))
 
     @staticmethod
     def baja_cliente():
@@ -287,11 +273,11 @@ class Clientes:
         '''
         try:
             dni = var.ui.edit_dni.text()
-            conexion.Conexion.baja_cliente(dni)
-            conexion.Conexion.mostrar_clientes()
+            Clientes.db_baja_cliente(dni)
+            Clientes.db_mostrar_clientes()
             Clientes.limpiar_cliente()
         except Exception as error:
-            print('Error en baja_cliente: %s ' % str(error))
+            print('Error en db_baja_cliente: %s ' % str(error))
 
     @staticmethod
     def modif_cliente():
@@ -311,16 +297,16 @@ class Clientes:
             newdata.append(var.pay)
             newdata.append(var.ui.sbox_edad.value())
             cod = var.ui.lbl_codigo.text()
-            conexion.Conexion.modif_cliente(cod, newdata)
-            conexion.Conexion.mostrar_clientes()
+            Clientes.db_modif_cliente(cod, newdata)
+            Clientes.db_mostrar_clientes()
         except Exception as error:
-            print('Error en modif_cliente: %s ' % str(error))
+            print('Error en db_modif_cliente: %s ' % str(error))
 
     @staticmethod
     def recargar():
         try:
             Clientes.limpiar_cliente()
-            conexion.Conexion.mostrar_clientes()
+            Clientes.db_mostrar_clientes()
             print('Recargando...')
         except Exception as error:
             print('Error en recargar: %s ' % str(error))
@@ -330,8 +316,147 @@ class Clientes:
         try:
             dni = var.ui.edit_dni.text()
             if Clientes.validar_dni(dni):
-                conexion.Conexion.buscar_cliente(dni)
+                Clientes.db_buscar_cliente(dni)
             else:
                 print('Se ha intentado buscar un DNI no valido')
         except Exception as error:
             print('Error en buscar: %s ' % str(error))
+
+    @staticmethod
+    def db_alta_cliente(cliente):
+        '''
+        Metodo que crea una instruccion de sql que inserta una tupla en la base de datos
+        segun los datos regogidos en el array que se le pasa como argumento.
+        :param cliente:
+        :return:
+        '''
+        query = QtSql.QSqlQuery()
+        query.prepare('insert into clientes (dni, apellidos, nombre, fechalta, direccion, provincia, sexo, '
+                      'formaspago, edad) '
+                      'VALUES (:dni, :apellidos, :nombre, :fechalta, :direccion, :provincia, :sexo, :formaspago, :edad)')
+        query.bindValue(':dni', str(cliente[0]))
+        query.bindValue(':apellidos', str(cliente[1]))
+        query.bindValue(':nombre', str(cliente[2]))
+        query.bindValue(':fechalta', str(cliente[3]))
+        query.bindValue(':direccion', str(cliente[4]))
+        query.bindValue(':provincia', str(cliente[5]))
+        query.bindValue(':sexo', str(cliente[6]))
+        query.bindValue(':formaspago', str(cliente[7]))
+        query.bindValue(':edad', str(cliente[8]))
+        if query.exec_():
+            print("Inserción Correcta")
+            Clientes.db_mostrar_clientes()
+            var.ui.lbl_status.setText('Cliente con dni ' + str(cliente[0]) + ' dado de alta')
+        else:
+            print("Error: ", query.lastError().text())
+
+    @staticmethod
+    def db_cargar_cliente():
+        """
+        Este metodo carga un cliente desde la base de datos a traves de una query que usa
+        el dni que este escrito en el editBox de DNI de la ventana principal.
+        :return:
+        """
+        dni = var.ui.edit_dni.text()
+        query = QtSql.QSqlQuery()
+        query.prepare('select * from clientes where dni = :dni')
+        query.bindValue(':dni', dni)
+        if query.exec_():
+            while query.next():
+                var.ui.lbl_codigo.setText(str(query.value(0)))
+                var.ui.edit_fechaalta.setText(query.value(4))
+                var.ui.edit_dir.setText(query.value(5))
+                var.ui.cmb_prov.setCurrentText(str(query.value(6)))
+                if str(query.value(7)) == 'Mujer':
+                    var.ui.rbt_fem.setChecked(True)
+                    var.ui.rbt_mas.setChecked(False)
+                else:
+                    var.ui.rbt_mas.setChecked(True)
+                    var.ui.rbt_fem.setChecked(False)
+                for data in Clientes.chkPago:
+                    data.setChecked(False)
+                if 'Efectivo' in query.value(8):
+                    Clientes.chkPago[0].setChecked(True)
+                if 'Tarjeta' in query.value(8):
+                    Clientes.chkPago[1].setChecked(True)
+                if 'Transferencia' in query.value(8):
+                    Clientes.chkPago[2].setChecked(True)
+                var.ui.sbox_edad.setValue(query.value(9))
+
+    @staticmethod
+    def db_mostrar_clientes():
+        '''
+        Metodo que carga el DNI, nombre y apellidos en la tabla de la ventana principal.
+        :return:
+        '''
+        index = 0
+        query = QtSql.QSqlQuery()
+        query.prepare('select dni, apellidos, nombre from clientes')
+        if query.exec_():
+            while query.next():
+                dni = query.value(0)
+                apellidos = query.value(1)
+                nombre = query.value(2)
+                var.ui.tbl_listcli.setRowCount(index + 1)  # crea la fila y a continuación mete los datos
+                var.ui.tbl_listcli.setItem(index, 0, QtWidgets.QTableWidgetItem(dni))
+                var.ui.tbl_listcli.setItem(index, 1, QtWidgets.QTableWidgetItem(apellidos))
+                var.ui.tbl_listcli.setItem(index, 2, QtWidgets.QTableWidgetItem(nombre))
+                index += 1
+        else:
+            print("Error mostrar clientes: ", query.lastError().text())
+
+    @staticmethod
+    def db_baja_cliente(dni):
+        ''''
+        Metodo para eliminar cliente. Se llama desde fichero clientes.py
+        :return None
+        '''
+        query = QtSql.QSqlQuery()
+        query.prepare('delete from clientes where dni = :dni')
+        query.bindValue(':dni', dni)
+        if query.exec_():
+            print('Baja cliente')
+            var.ui.lbl_status.setText('Cliente con dni ' + dni + ' dado de baja')
+        else:
+            print("Error mostrar clientes: ", query.lastError().text())
+
+    @staticmethod
+    def db_modif_cliente(codigo, newdata):
+        ''''
+           modulo para modificar cliente. se llama desde fichero clientes.py
+           :return None
+           '''
+        query = QtSql.QSqlQuery()
+        codigo = int(codigo)
+        query.prepare('update clientes set dni=:dni, apellidos=:apellidos, nombre=:nombre, fechalta=:fechalta, '
+                      'direccion=:direccion, provincia=:provincia, sexo=:sexo, formaspago=:formaspago, edad=:edad '
+                      'where codigo=:codigo')
+        query.bindValue(':codigo', int(codigo))
+        query.bindValue(':dni', str(newdata[0]))
+        query.bindValue(':apellidos', str(newdata[1]))
+        query.bindValue(':nombre', str(newdata[2]))
+        query.bindValue(':fechalta', str(newdata[3]))
+        query.bindValue(':direccion', str(newdata[4]))
+        query.bindValue(':provincia', str(newdata[5]))
+        query.bindValue(':sexo', str(newdata[6]))
+        query.bindValue(':formaspago', str(newdata[7]))
+        query.bindValue(':edad', str(newdata[8]))
+        if query.exec_():
+            print('Cliente modificado')
+            var.ui.lbl_status.setText('Cliente con dni ' + str(newdata[0]) + ' modificado')
+        else:
+            print("Error modificar cliente: ", query.lastError().text())
+
+    @staticmethod
+    def db_buscar_cliente(dni):
+        query = QtSql.QSqlQuery()
+        query.prepare('select * from clientes where dni = :dni')
+        query.bindValue(':dni', dni)
+        if query.exec_():
+            while query.next():
+                var.ui.tbl_listcli.setRowCount(1)
+                var.ui.tbl_listcli.setItem(0, 0, QtWidgets.QTableWidgetItem(dni))
+                var.ui.tbl_listcli.setItem(0, 1, QtWidgets.QTableWidgetItem(query.value(2)))
+                var.ui.tbl_listcli.setItem(0, 2, QtWidgets.QTableWidgetItem(query.value(3)))
+        else:
+            print("Error buscando cliente: ", query.lastError().text())
