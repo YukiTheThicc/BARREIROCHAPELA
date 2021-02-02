@@ -22,6 +22,12 @@ class Facturas:
     dlgCalendar = None
 
     @staticmethod
+    def crear_modulo():
+        Facturas.dlgCalendar = DialogCalendar()
+        # Conxion del boton de calendario
+        var.ui.btn_fac_calendar.clicked.connect(Facturas.abrir_calendar)
+
+    @staticmethod
     def abrir_calendar():
         try:
             Facturas.dlgCalendar.show()
@@ -29,17 +35,11 @@ class Facturas:
             print('Error en abrir_calendar: %s ' % str(error))
 
     @staticmethod
-    def crear_modulo():
-        Facturas.dlgCalendar = DialogCalendar()
-        # Conxion del boton de calendario
-        var.ui.btn_fac_calendar.clicked.connect(Facturas.abrir_calendar)
-
-    @staticmethod
     def cargar_fecha(qDate):
         try:
             data = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
             var.ui.edit_fac_calendar.setText(str(data))
-            var.dlgCalendar.hide()
+            Facturas.dlgCalendar.hide()
         except Exception as error:
             print('Error en cargar_fecha: %s ' % str(error))
 
