@@ -261,6 +261,10 @@ class Clientes:
             i = 0
             for i, dato in enumerate(campos_cliente):
                 dato.setText(tupla_elegida[i])
+                if i == 0:
+                    var.ui.edit_fac_dni.setText(tupla_elegida[0])
+                if i == 1:
+                    var.ui.edit_fac_nombre.setText(tupla_elegida[1])
             Clientes.db_cargar_cliente()
         except Exception as error:
             print('Error en db_cargar_cliente: %s ' % str(error))

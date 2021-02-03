@@ -1,5 +1,5 @@
 <RCC>
   <qresource prefix="icono">
-    <file>img/salir.png</file>
+    <file>salir.png</file>
   </qresource>
 </RCC>
