@@ -3,6 +3,7 @@ from PyQt5 import QtSql
 
 from venCalendar import *
 import var
+import modulos.ventas as v
 
 
 class DialogCalendar(QtWidgets.QDialog):
@@ -20,7 +21,6 @@ class DialogCalendar(QtWidgets.QDialog):
 class Facturas:
 
     dlg_calendar = None
-    cmb_articulos = None
 
     @classmethod
     def crear_modulo(cls):
@@ -30,8 +30,6 @@ class Facturas:
 
         :return:
         :rtype:
-
-
 
         """
         cls.dlg_calendar = DialogCalendar()
@@ -47,33 +45,11 @@ class Facturas:
         :return:
         :rtype:
 
-
-
         """
         try:
             cls.dlg_calendar.show()
         except Exception as error:
             print('Error en abrir_calendar: %s ' % str(error))
-
-    @classmethod
-    def cargar_cmb_articulos(cls):
-        """
-
-
-
-        :return:
-        :rtype:
-
-
-
-        """
-        cls.cmb_articulos.clear()
-        query = QtSql.QSqlQuery()
-        cls.cmb_articulos.addItem('')
-        query.prepare('select codigo, producto from productos order by producto')
-        if query.exec_():
-            while query.next():
-                cls.cmb_articulos.addItem(str(query.value(1)))
 
     @classmethod
     def cargar_fecha(cls, qDate):
@@ -86,8 +62,6 @@ class Facturas:
         :return:
         :rtype:
 
-
-
         """
         try:
             data = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
@@ -97,15 +71,13 @@ class Facturas:
             print('Error en cargar_fecha: %s ' % str(error))
 
     @classmethod
-    def alta_fac(cls):
+    def alta_factura(cls):
         """
 
 
 
         :return:
         :rtype:
-
-
 
         """
         dni = var.ui.edit_fac_dni.text()
@@ -123,23 +95,34 @@ class Facturas:
         :return:
         :rtype:
 
-
-
         """
         try:
             fila = var.ui.tbl_fac_listfact.selectedItems()
+            if fila:
+                fila = [dato.text() for dato in fila]
+                var.ui.lbl_fac_numero.setText(str(fila[0]))
+                var.ui.edit_fac_fecha.setText(str(fila[1]))
+                cls.db_cargar_fac(str(fila[0]))
+        except Exception as error:
+            print('Error en cargar_factura: %s ' % str(error))
 
+    @classmethod
+    def borrar_factura(cls):
+        try:
+            codigo = var.ui.lbl_fac_numero.text()
+            cls.db_borrar_factura(codigo)
+            v.
+        except Exception as error:
+            print('Error Borrar Factura en Cascada: %s ' % str(error))
 
     @staticmethod
-    def limpiar_fac():
+    def limpiar_factura():
         """
 
 
 
         :return:
         :rtype:
-
-
 
         """
         var.ui.edit_fac_dni.setText("")
@@ -162,8 +145,6 @@ class Facturas:
         :return:
         :rtype:
 
-
-
         """
         query = QtSql.QSqlQuery()
         query.prepare('insert into facturas (dni, fecha, apellidos) VALUES (:dni, :fecha, :apellidos )')
@@ -184,8 +165,6 @@ class Facturas:
 
         :return:
         :rtype:
-
-
 
         """
         i = 0
@@ -208,8 +187,6 @@ class Facturas:
 
         :return:
         :rtype:
-
-
 
         """
         dni = var.ui.editDniclifac.text()
@@ -242,8 +219,6 @@ class Facturas:
         :return:
         :rtype:
 
-
-
         """
         query = QtSql.QSqlQuery()
         query.prepare('select dni, apellidos from facturas where codfac = :codfac')
@@ -252,3 +227,23 @@ class Facturas:
             while query.next():
                 var.ui.editDniclifac.setText(str(query.value(0)))
                 var.ui.editApelclifac.setText(str(query.value(1)))
+
+    @classmethod
+    def db_borrar_factura(cls, codigo):
+        query = QtSql.QSqlQuery()
+        query.prepare('delete from facturas where codfac = :codigo')
+        query.bindValue(':codigo', int(codigo))
+        if query.exec_():
+            var.ui.lblstatus.setText('Factura Borrada')
+            cls.db_mostrar_facturas()
+        else:
+            print("Error borrando factura en db_borrar_factura: ", query.lastError().text())
+        query.prepare('delete from ventas where codfacventa = :codigo')
+        query.bindValue(':codigo', int(codigo))
+        if query.exec_():
+            var.ui.lblstatus.setText('Factura Anulada')
+        else:
+            print("Error borrando ventas en db_borrar_factura: ", query.lastError().text())
+        var.ui.lblSubtotal.setText('0.00')
+        var.ui.lblIva.setText('0.00')
+        var.ui.lblTotal.setText('0.00')
