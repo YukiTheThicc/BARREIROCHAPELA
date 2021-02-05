@@ -21,6 +21,7 @@ class DialogCalendar(QtWidgets.QDialog):
 class Facturas:
 
     dlg_calendar = None
+    subtotal = 0.00
 
     @classmethod
     def crear_modulo(cls):

@@ -5,12 +5,11 @@ import var
 
 
 class Ventas:
-
     cmb_articulos = None
 
     @classmethod
     def crear_modulo(cls):
-        pass
+        cls.cargar_cmb_articulos()
 
     @classmethod
     def cargar_cmb_articulos(cls):
@@ -52,38 +51,63 @@ class Ventas:
     @classmethod
     def procesar_venta(cls):
         try:
-            subtotal = 0.00
-            var.venta = []
-            codfac = var.ui.lblNumFac.text()
-            var.venta.append(int(codfac))
+            new_venta = []
             articulo = cls.cmb_articulos.currentText()
             dato = cls.db_recoger_codigo_precio(articulo)
-            var.venta.append(int(dato[0]))
-            var.venta.append(articulo)
+            codfac = var.ui.lblNumFac.text()
+
             row = var.ui.tabVenta.currentRow()
             cantidad = var.ui.tabVenta.item(row, 2).text()
             cantidad = cantidad.replace(',', '.')
-            var.venta.append(int(cantidad))
             precio = dato[1].replace(',', '.')
-            var.venta.append(round(float(precio),2))
-            subtotal = round(float(cantidad)*float(dato[1]), 2)
-            var.venta.append(subtotal)
-            var.venta.append(row)
-            #sleep(1)
+            subtotal = round(float(cantidad) * float(dato[1]), 2)
+
+            new_venta.append(int(codfac))
+            new_venta.append(int(dato[0]))
+            new_venta.append(articulo)
+            new_venta.append(int(cantidad))
+            new_venta.append(round(float(precio), 2))
+            new_venta.append(subtotal)
+            new_venta.append(row)
+
             if codfac != '' and articulo != '' and cantidad != '':
-                conexion.Conexion.altaVenta()
-                var.subfac = round(float(subtotal) + float(var.subfac),2)
-                var.ui.lblSubtotal.setText(str(var.subfac))
+                cls.db_insertar_venta(new_venta)
+                subtotal_factura = round(float(subtotal), 2)
+                var.ui.lblSubtotal.setText(str(subtotal_factura))
                 var.iva = round(float(var.subfac) * 0.21, 2)
                 var.ui.lblIva.setText(str(var.iva))
                 var.fac = round(float(var.iva) + float(var.subfac), 2)
                 var.ui.lblTotal.setText(str(var.fac))
                 Ventas.mostrarVentasfac()
             else:
-               var.ui.lblstatus.setText('Faltan Datos de la Factura')
+                var.ui.lblstatus.setText('Faltan Datos de la Factura')
 
         except Exception as error:
             print('Error en procesar_venta: %s ' % str(error))
+
+    @classmethod
+    def db_insertar_venta(cls, venta):
+        query = QtSql.QSqlQuery()
+        query.prepare('insert into ventas (codfacventa, codarticventa, cantidad, precio) VALUES (:codfacventa, '
+                      ':codarticventa, :cantidad, :precio )')
+        query.bindValue(':codfacventa', int(venta[0]))
+        query.bindValue(':codarticventa', int(venta[1]))
+        query.bindValue(':cantidad', int(venta[3]))
+        query.bindValue(':precio', float(venta[4]))
+        row = var.ui.tabVenta.currentRow()
+        if query.exec_():
+            var.ui.lblstatus.setText('Venta Realizada')
+            var.ui.tabVenta.setItem(row, 1, QtWidgets.QTableWidgetItem(str(venta[2])))
+            var.ui.tabVenta.setItem(row, 2, QtWidgets.QTableWidgetItem(str(venta[3])))
+            var.ui.tabVenta.setItem(row, 3, QtWidgets.QTableWidgetItem(str(venta[4])))
+            var.ui.tabVenta.setItem(row, 4, QtWidgets.QTableWidgetItem(str(venta[5])))
+            row = row + 1
+            var.ui.tabVenta.insertRow(row)
+            var.ui.tabVenta.setCellWidget(row, 1, var.cmbventa)
+            var.ui.tabVenta.scrollToBottom()
+            cls.cargar_cmb_articulos()
+        else:
+            print("Error alta venta: ", query.lastError().text())
 
     @staticmethod
     def db_recoger_codigo_precio(articulo: str):
