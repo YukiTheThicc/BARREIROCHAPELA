@@ -112,7 +112,7 @@ class Facturas:
         try:
             codigo = var.ui.lbl_fac_numero.text()
             cls.db_borrar_factura(codigo)
-            v.
+
         except Exception as error:
             print('Error Borrar Factura en Cascada: %s ' % str(error))
 

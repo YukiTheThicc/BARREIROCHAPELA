@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>events &#8212; documentación de BARREIROCHAPELA - v0.1.2</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código fuente para events</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">var</span>
+<span class="kn">from</span> <span class="nn">modulos</span> <span class="kn">import</span> <span class="n">productos</span> <span class="k">as</span> <span class="n">p</span>
+<span class="kn">from</span> <span class="nn">modulos.clientes</span> <span class="kn">import</span> <span class="n">Clientes</span>
+
+
+<div class="viewcode-block" id="Eventos"><a class="viewcode-back" href="../src/events.html#events.Eventos">[documentos]</a><span class="k">class</span> <span class="nc">Eventos</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Eventos.salir"><a class="viewcode-back" href="../src/events.html#events.Eventos.salir">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">salir</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modulo para cerrar el programa</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgSalir</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">lbl_pregunta</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Seguro/a que quiere salir?&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">dlgSalir</span><span class="o">.</span><span class="n">exec_</span><span class="p">():</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">dlgSalir</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>  <span class="c1"># necesario para que ignore X de la ventana</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.abrir_buscador"><a class="viewcode-back" href="../src/events.html#events.Eventos.abrir_buscador">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">abrir_buscador</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgBuscador</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error abrir explorador: </span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.abrir_impresora"><a class="viewcode-back" href="../src/events.html#events.Eventos.abrir_impresora">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">abrir_impresora</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgImprimir</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Imprimir&#39;</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgImprimir</span><span class="o">.</span><span class="n">setModal</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgImprimir</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error abrir imprimr: </span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.eliminar"><a class="viewcode-back" href="../src/events.html#events.Eventos.eliminar">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">eliminar</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Funcion para llamar al dialogo de confirmacion y recoger el resultado</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Clientes</span><span class="o">.</span><span class="n">dlgEliminarCliente</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">Clientes</span><span class="o">.</span><span class="n">dlgEliminarCliente</span><span class="o">.</span><span class="n">pregunta</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Esta seguro/a que quiere borrar?&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.aviso"><a class="viewcode-back" href="../src/events.html#events.Eventos.aviso">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">aviso</span><span class="p">(</span><span class="n">mensaje</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modulo para cerrar el programa</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgAviso</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">lbl_mensaje</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">mensaje</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.cargar_prov"><a class="viewcode-back" href="../src/events.html#events.Eventos.cargar_prov">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">cargar_prov</span><span class="p">():</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Carga las provincias al iniciar el programa</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prov</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;Pontevedra&#39;</span><span class="p">,</span><span class="s1">&#39;A Coruña&#39;</span><span class="p">,</span><span class="s1">&#39;Lugo&#39;</span><span class="p">,</span><span class="s1">&#39;Ourense&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prov</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">cmb_prov</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.about"><a class="viewcode-back" href="../src/events.html#events.Eventos.about">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">about</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">var</span><span class="o">.</span><span class="n">dlgAbout</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error en about events </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<span class="c1"># =============================================== EVENTOS PARA PRODUCTOS ===============================================</span>
+
+<div class="viewcode-block" id="Eventos.eliminar_producto"><a class="viewcode-back" href="../src/events.html#events.Eventos.eliminar_producto">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">eliminar_producto</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Funcion para llamar al dialogo de confirmacion y recoger el resultado</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">codigo</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lbl_pro_muestra_codigo</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">codigo</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">dlgEliminarProducto</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+                <span class="n">var</span><span class="o">.</span><span class="n">dlgEliminarProducto</span><span class="o">.</span><span class="n">pregunta</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Esta seguro/a que quiere borrar</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                                         <span class="s2">&quot;este producto?&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Eventos</span><span class="o">.</span><span class="n">aviso</span><span class="p">(</span><span class="s2">&quot;Seleccione un producto&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Eventos.modificar_producto"><a class="viewcode-back" href="../src/events.html#events.Eventos.modificar_producto">[documentos]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">modificar_producto</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Funcion para llamar al dialogo de confirmacion y recoger el resultado</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">codigo</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lbl_pro_muestra_codigo</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">nombre</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">lbl_pro_nombre</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">nombre</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">codigo</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nombre</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">Productos</span><span class="o">.</span><span class="n">modif_producto</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">Eventos</span><span class="o">.</span><span class="n">aviso</span><span class="p">(</span><span class="s2">&quot;Necesita un nombre&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Eventos</span><span class="o">.</span><span class="n">aviso</span><span class="p">(</span><span class="s2">&quot;Seleccione un producto&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error en modificar_producto events: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span></div></div>
+
+<span class="c1"># ============================================ EVENTOS PARA FACTURAS/VENTAS ============================================</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">BARREIROCHAPELA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegación</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Código de módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Santiago Barreiro Chapela.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

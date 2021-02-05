@@ -9,6 +9,7 @@ Welcome to BARREIROCHAPELA's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+      <>
 
 
 
