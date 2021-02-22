@@ -76,16 +76,12 @@ class Main(QtWidgets.QMainWindow):
         var.ui.action_i_clientes.triggered.connect(impresora.Printer.informe_cliente)
         var.ui.action_i_productos.triggered.connect(impresora.Printer.informe_productos)
 
+        conexion.Conexion.db_connect(var.filebd)
+
         c.Clientes.crear_modulo()
         p.Productos.crear_modulo()
         f.Facturas.crear_modulo()
         v.Ventas.crear_modulo()
-
-        # Conexion con la base de datos
-        conexion.Conexion.db_connect(var.filebd)
-        # Muestra en la tabla los clientes guardados en la base de datos
-        c.Clientes.db_mostrar_clientes()
-        conexion.Conexion.actualizar_tabla_pro()
 
     def closeEvent(self, event):
         if event:

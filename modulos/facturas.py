@@ -34,8 +34,16 @@ class Facturas:
         """
         cls.dlg_calendar = DialogCalendar()
 
-        var.ui.btn_fac_calendar.clicked.connect(Facturas.abrir_calendar)
+        var.ui.btn_fac_calendar.clicked.connect(cls.abrir_calendar)
+        var.ui.btn_fac_facturar.clicked.connect(cls.alta_factura)
+        var.ui.btn_fac_anular.clicked.connect(cls.borrar_factura)
+        var.ui.btn_fac_buscar.clicked.connect(cls.db_mostrar_facturas_por_cliente)
+        var.ui.btn_fac_recargar.clicked.connect(cls.db_mostrar_facturas)
+        var.ui.tbl_fac_listfact.clicked.connect(cls.cargar_factura)
+        var.ui.tbl_fac_listfact.clicked.connect(v.Ventas.mostrar_ventas)
+        var.ui.tbl_fac_listfact.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
 
+        cls.db_mostrar_facturas()
 
     @classmethod
     def abrir_calendar(cls):
@@ -53,19 +61,19 @@ class Facturas:
             print('Error en abrir_calendar: %s ' % str(error))
 
     @classmethod
-    def cargar_fecha(cls, qDate):
+    def cargar_fecha(cls, q_date):
         """
 
 
 
-        :param qDate:
-        :type qDate:
+        :param q_date:
+        :type q_date:
         :return:
         :rtype:
 
         """
         try:
-            data = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
+            data = ('{0}/{1}/{2}'.format(q_date.day(), q_date.month(), q_date.year()))
             var.ui.edit_fac_calendar.setText(str(data))
             cls.dlg_calendar.hide()
         except Exception as error:
@@ -86,6 +94,7 @@ class Facturas:
         fecha = var.ui.edit_fac_calendar.text()
         if dni != '' and fecha != '':
             cls.db_alta_factura(dni, fecha, nombre)
+        v.Ventas.setup_tabla_ventas(0)
 
     @classmethod
     def cargar_factura(cls):
@@ -102,19 +111,26 @@ class Facturas:
             if fila:
                 fila = [dato.text() for dato in fila]
                 var.ui.lbl_fac_numero.setText(str(fila[0]))
-                var.ui.edit_fac_fecha.setText(str(fila[1]))
+                var.ui.edit_fac_calendar.setText(str(fila[1]))
                 cls.db_cargar_fac(str(fila[0]))
         except Exception as error:
             print('Error en cargar_factura: %s ' % str(error))
 
     @classmethod
     def borrar_factura(cls):
+        """
+
+
+
+        :return:
+
+        """
         try:
             codigo = var.ui.lbl_fac_numero.text()
             cls.db_borrar_factura(codigo)
-
+            v.Ventas.setup_tabla_ventas(0)
         except Exception as error:
-            print('Error Borrar Factura en Cascada: %s ' % str(error))
+            print('Error en borrar_factura: %s ' % str(error))
 
     @staticmethod
     def limpiar_factura():
@@ -153,13 +169,13 @@ class Facturas:
         query.bindValue(':fecha', str(fecha))
         query.bindValue(':apellidos', str(nombre))
         if query.exec_():
-            var.ui.lblstatus.setText('Factura Creada')
+            var.ui.lbl_status.setText('Factura Creada')
             cls.db_mostrar_facturas()
         else:
             print("Error en db_alta_factura: ", query.lastError().text())
 
-    @staticmethod
-    def db_mostrar_facturas():
+    @classmethod
+    def db_mostrar_facturas(cls):
         """
 
 
@@ -170,15 +186,20 @@ class Facturas:
         """
         i = 0
         query = QtSql.QSqlQuery()
-        query.prepare('select cod_factura, fecha from facturas order by codfac desc')
+        query.prepare('select codfac, fecha from facturas order by codfac desc')
         if query.exec_():
-            var.ui.tbl_fac_listfact.setRowCount(i + 1)
-            var.ui.tbl_fac_listfact(1, 0, QtWidgets.QTableWidgetItem(str(query.value(0))))
-            var.ui.tbl_fac_listfact(i, 1, QtWidgets.QTableWidgetItem(str(query.value(1))))
+            while query.next():
+                var.ui.tbl_fac_listfact.setRowCount(i + 1)
+                var.ui.tbl_fac_listfact.setItem(i, 0, QtWidgets.QTableWidgetItem(str(query.value(0))))
+                var.ui.tbl_fac_listfact.setItem(i, 1, QtWidgets.QTableWidgetItem(str(query.value(1))))
+                i += 1
+            cls.limpiar_factura()
+            var.ui.tbl_fac_listfact.selectRow(0)
+            var.ui.tbl_fac_listfact.setFocus()
         else:
-            print("Error mostrar facturas: ", query.lastError().text())
+            print("Error db_mostrar_facturas: ", query.lastError().text())
         if i == 0:
-            var.ui.tabFac.clearContents()
+            var.ui.tbl_fac_listfact.clearContents()
 
     @staticmethod
     def db_mostrar_facturas_por_cliente():
@@ -190,7 +211,7 @@ class Facturas:
         :rtype:
 
         """
-        dni = var.ui.editDniclifac.text()
+        dni = var.ui.edit_fac_dni.text()
         query = QtSql.QSqlQuery()
         query.prepare('select codfac, fecha from facturas where dni = :dni order by codfac desc')
         query.bindValue(':dni', str(dni))
@@ -199,13 +220,13 @@ class Facturas:
             while query.next():
                 codfac = query.value(0)
                 fecha = query.value(1)
-                var.ui.tabFac.setRowCount(i + 1)
-                var.ui.tabFac.setItem(i, 0, QtWidgets.QTableWidgetItem(str(codfac)))
-                var.ui.tabFac.setItem(i, 1, QtWidgets.QTableWidgetItem(str(fecha)))
+                var.ui.tbl_fac_listfact.setRowCount(i + 1)
+                var.ui.tbl_fac_listfact.setItem(i, 0, QtWidgets.QTableWidgetItem(str(codfac)))
+                var.ui.tbl_fac_listfact.setItem(i, 1, QtWidgets.QTableWidgetItem(str(fecha)))
                 i += 1
             if i == 0:
-                var.ui.tabFac.setRowCount(0)
-                var.ui.lblstatus.setText('Cliente sin Facturas')
+                var.ui.tbl_fac_listfact.setRowCount(0)
+                var.ui.lbl_status.setText('Cliente sin Facturas')
         else:
             print("Error en db_mostrar_facturas_por_cliente: ", query.lastError().text())
 
@@ -226,8 +247,10 @@ class Facturas:
         query.bindValue(':codfac', int(cod))
         if query.exec_():
             while query.next():
-                var.ui.editDniclifac.setText(str(query.value(0)))
-                var.ui.editApelclifac.setText(str(query.value(1)))
+                var.ui.edit_fac_dni.setText(str(query.value(0)))
+                var.ui.edit_fac_nombre.setText(str(query.value(1)))
+        else:
+            print("Error en db_cargar_fac: ", query.lastError().text())
 
     @classmethod
     def db_borrar_factura(cls, codigo):
@@ -243,16 +266,16 @@ class Facturas:
         query.prepare('delete from facturas where codfac = :codigo')
         query.bindValue(':codigo', int(codigo))
         if query.exec_():
-            var.ui.lblstatus.setText('Factura Borrada')
+            var.ui.lbl_status.setText('Factura Borrada')
             cls.db_mostrar_facturas()
         else:
-            print("Error borrando factura en db_borrar_factura: ", query.lastError().text())
-        query.prepare('delete from ventas where codfacventa = :codigo')
+            print("Error en db_borrar_factura: ", query.lastError().text())
+        query.prepare('delete from ventas where cod_factura_venta = :codigo')
         query.bindValue(':codigo', int(codigo))
         if query.exec_():
-            var.ui.lblstatus.setText('Factura Anulada')
+            var.ui.lbl_status.setText('Factura Anulada')
         else:
-            print("Error borrando ventas en db_borrar_factura: ", query.lastError().text())
-        var.ui.lblSubtotal.setText('0.00')
-        var.ui.lblIva.setText('0.00')
-        var.ui.lblTotal.setText('0.00')
+            print("Error en db_borrar_factura: ", query.lastError().text())
+        var.ui.lbl_fac_subtotal.setText('0.00')
+        var.ui.lbl_fac_iva.setText('0.00')
+        var.ui.lbl_fac_total.setText('0.00')

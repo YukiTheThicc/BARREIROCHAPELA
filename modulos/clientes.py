@@ -55,8 +55,8 @@ class Clientes:
     dlgEliminarCliente = None
     chkPago = None
 
-    @staticmethod
-    def crear_modulo():
+    @classmethod
+    def crear_modulo(cls):
         """
 
         Metodo que prepara y crea el modulo de clientes
@@ -95,12 +95,14 @@ class Clientes:
         var.ui.sbox_edad.setMinimum(18)
         var.ui.sbox_edad.setMaximum(120)
 
-        Clientes.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
-        Clientes.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
-        for i in Clientes.rbtSex:
+        cls.rbtSex = (var.ui.rbt_fem, var.ui.rbt_mas)
+        cls.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
+        for i in cls.rbtSex:
             i.toggled.connect(Clientes.sel_sexo)
         for i in Clientes.chkPago:
             i.stateChanged.connect(Clientes.sel_pago)
+
+        cls.db_mostrar_clientes()
 
     @staticmethod
     def validar_dni(dni):
