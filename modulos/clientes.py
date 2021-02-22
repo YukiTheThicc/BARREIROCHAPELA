@@ -15,6 +15,7 @@ class DialogEliminarCliente(QtWidgets.QDialog):
     Clase de la ventana de diálogo que saltará al intentar eliminar un cliente
 
     """
+
     def __init__(self):
         super(DialogEliminarCliente, self).__init__()
         Clientes.dlgEliminarCliente = Ui_ven_confirmacion()
@@ -31,6 +32,7 @@ class DialogCalendar(QtWidgets.QDialog):
     Clase que define la ventana de diálogo del calendario que se abrirá al pulsar el botón del calendario.
 
     """
+
     def __init__(self):
         super(DialogCalendar, self).__init__()
         Clientes.dlgCalendar = ui_ven_calendar()
@@ -54,6 +56,11 @@ class Clientes:
     dlgCalendar = None
     dlgEliminarCliente = None
     chkPago = None
+    rbtSex = None
+    sex = None
+    vpro = None
+    pay = []
+    pay2 = []
 
     @classmethod
     def crear_modulo(cls):
@@ -81,16 +88,12 @@ class Clientes:
         var.ui.btn_limpiar.clicked.connect(Clientes.limpiar_cliente)
         var.ui.btn_eliminar.clicked.connect(events.Eventos.eliminar)
         var.ui.btn_modificar.clicked.connect(Clientes.modif_cliente)
-        var.ui.cmb_prov.activated[str].connect(Clientes.sel_pov)
         var.ui.tbl_listcli.clicked.connect(Clientes.cargar_cliente)
         var.ui.tbl_listcli.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
-        events.Eventos.cargar_prov()
         var.ui.btn_recargar.clicked.connect(Clientes.recargar)
         var.ui.btn_buscar.clicked.connect(Clientes.buscar)
 
-        var.ui.statusbar.addPermanentWidget(var.ui.lbl_status, 1)
-        var.ui.lbl_status.setText('Buenos Días')
-
+        cls.cargar_prov()
         var.ui.sbox_edad.setValue(18)
         var.ui.sbox_edad.setMinimum(18)
         var.ui.sbox_edad.setMaximum(120)
@@ -99,17 +102,27 @@ class Clientes:
         cls.chkPago = (var.ui.chk_efect, var.ui.chk_tarje, var.ui.chk_trans)
         for i in cls.rbtSex:
             i.toggled.connect(Clientes.sel_sexo)
-        for i in Clientes.chkPago:
+        for i in cls.chkPago:
             i.stateChanged.connect(Clientes.sel_pago)
 
         cls.db_mostrar_clientes()
 
     @staticmethod
-    def validar_dni(dni):
+    def cargar_prov():
         '''
-        Codigo que valida el dni
+        Carga las provincias al iniciar el programa
         :return:
         '''
+        try:
+            prov = ['', 'Pontevedra', 'A Coruña', 'Lugo', 'Ourense']
+            for i in prov:
+                var.ui.cmb_prov.addItem(i)
+        except Exception as error:
+            print('Error %s' % str(error))
+
+    @staticmethod
+    def validar_dni(dni):
+
         try:
             tabla = 'TRWAGMYFPDXBNJZSQVHLCKE'
             dig_ext = 'XYZ'
@@ -128,9 +141,7 @@ class Clientes:
 
     @staticmethod
     def show_validar_dni():
-        '''
-        Muestra indicacion sobre el resultado de la validacion del dni
-        '''
+
         try:
             dni = var.ui.edit_dni.text()
             if Clientes.validar_dni(dni):
@@ -147,39 +158,30 @@ class Clientes:
             print('Error modulo valido DNI')
             return None
 
-    @staticmethod
-    def sel_sexo():
+    @classmethod
+    def sel_sexo(cls):
         try:
             if var.ui.rbt_fem.isChecked():
-                var.sex = 'Mujer'
+                cls.sex = 'Mujer'
             if var.ui.rbt_mas.isChecked():
-                var.sex = 'Hombre'
+                cls.sex = 'Hombre'
         except Exception as error:
             print('Error en sel_sexo: %s' % str(error))
 
-    @staticmethod
-    def sel_pago():
+    @classmethod
+    def sel_pago(cls):
         try:
-            var.pay = []
+            cls.pay = []
             for i, data in enumerate(var.ui.grp_chk_pago.buttons()):
-                # Coge el grupo de chk_box
                 if data.isChecked() and i == 0:
-                    var.pay.append('Efectivo')
+                    cls.pay.append('Efectivo')
                 if data.isChecked() and i == 1:
-                    var.pay.append('Tarjeta')
+                    cls.pay.append('Tarjeta')
                 if data.isChecked() and i == 2:
-                    var.pay.append('Transferencia')
-            return var.pay
+                    cls.pay.append('Transferencia')
+            return cls.pay
         except Exception as error:
             print('Error en sel_pago: %s' % str(error))
-
-    @staticmethod
-    def sel_pov(prov):
-        try:
-            global vpro
-            vpro = prov
-        except Exception as error:
-            print('Error en sel_pov: %s' % str(error))
 
     @staticmethod
     def abrir_calendar():
@@ -189,20 +191,16 @@ class Clientes:
             print('Error en abrir_calendar: %s ' % str(error))
 
     @staticmethod
-    def cargar_fecha(qDate):
+    def cargar_fecha(q_date):
         try:
-            data = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
+            data = ('{0}/{1}/{2}'.format(q_date.day(), q_date.month(), q_date.year()))
             var.ui.edit_fechaalta.setText(str(data))
             Clientes.dlgCalendar.hide()
         except Exception as error:
             print('Error en cargar_fecha: %s ' % str(error))
 
-    @staticmethod
-    def alta_cliente():
-        '''
-        Cargara los datos de los clientes en la tabla
-        :return:
-        '''
+    @classmethod
+    def alta_cliente(cls):
         try:
             dni = var.ui.edit_dni.text()
             if Clientes.validar_dni(dni):
@@ -211,8 +209,8 @@ class Clientes:
                                     var.ui.edit_fechaalta, var.ui.edit_dir]
                 for i in edit_text_fields:
                     new_client_data.append(i.text())  # cargamos los valores que hay en los campos
-                new_client_data.append(vpro)
-                new_client_data.append(var.sex)
+                new_client_data.append(cls.vpro)
+                new_client_data.append(cls.sex)
                 new_client_data.append(Clientes.sel_pago())
                 new_client_data.append(var.ui.sbox_edad.value())
                 if len(new_client_data) == 9:
@@ -225,21 +223,18 @@ class Clientes:
         except Exception as error:
             print('Error en db_alta_cliente: %s ' % str(error))
 
-    @staticmethod
-    def limpiar_cliente():
-        '''
-        limpia los datos del formulario cliente
-        :return: none
-        '''
+    @classmethod
+    def limpiar_cliente(cls):
+
         try:
             client = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre,
                       var.ui.edit_fechaalta, var.ui.edit_dir]
             for i in range(len(client)):
                 client[i].setText('')
             var.ui.grp_chk_pago.setExclusive(False)  # necesario para los radiobutton
-            for dato in var.rbtSex:
+            for dato in cls.rbtSex:
                 dato.setChecked(False)
-            for data in var.chkPago:
+            for data in cls.chkPago:
                 data.setChecked(False)
             var.ui.cmb_prov.setCurrentIndex(0)
             var.ui.lbl_validar.setText('')
@@ -250,17 +245,12 @@ class Clientes:
 
     @staticmethod
     def cargar_cliente():
-        '''
-        Carga los datos de un elemento en la tabla en los campos de datos
-        :return: none
-        '''
+
         try:
             tupla_elegida = var.ui.tbl_listcli.selectedItems()
             campos_cliente = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre]
-            var.dni = campos_cliente[0].text()
             if tupla_elegida:
                 tupla_elegida = [dato.text() for dato in tupla_elegida]
-            i = 0
             for i, dato in enumerate(campos_cliente):
                 dato.setText(tupla_elegida[i])
                 if i == 0:
@@ -273,10 +263,7 @@ class Clientes:
 
     @staticmethod
     def baja_cliente():
-        '''
-        módulos para dar de baja un cliente
-        :return:
-        '''
+
         try:
             dni = var.ui.edit_dni.text()
             Clientes.db_baja_cliente(dni)
@@ -285,12 +272,9 @@ class Clientes:
         except Exception as error:
             print('Error en db_baja_cliente: %s ' % str(error))
 
-    @staticmethod
-    def modif_cliente():
-        """
-        módulos para dar de modificar datos de un cliente
-        :return:
-        """
+    @classmethod
+    def modif_cliente(cls):
+
         try:
             newdata = []
             client = [var.ui.edit_dni, var.ui.edit_apel, var.ui.edit_nombre,
@@ -298,9 +282,9 @@ class Clientes:
             for i in client:
                 newdata.append(i.text())  # cargamos los valores que hay en los editline
             newdata.append(var.ui.cmb_prov.currentText())
-            newdata.append(var.sex)
+            newdata.append(cls.sex)
             var.pay = Clientes.sel_pago()
-            newdata.append(var.pay)
+            newdata.append(cls.pay)
             newdata.append(var.ui.sbox_edad.value())
             cod = var.ui.lbl_codigo.text()
             Clientes.db_modif_cliente(cod, newdata)
@@ -330,16 +314,12 @@ class Clientes:
 
     @staticmethod
     def db_alta_cliente(cliente):
-        '''
-        Metodo que crea una instruccion de sql que inserta una tupla en la base de datos
-        segun los datos regogidos en el array que se le pasa como argumento.
-        :param cliente:
-        :return:
-        '''
+
         query = QtSql.QSqlQuery()
         query.prepare('insert into clientes (dni, apellidos, nombre, fechalta, direccion, provincia, sexo, '
                       'formaspago, edad) '
-                      'VALUES (:dni, :apellidos, :nombre, :fechalta, :direccion, :provincia, :sexo, :formaspago, :edad)')
+                      'VALUES (:dni, :apellidos, :nombre, :fechalta, :direccion, :provincia, :sexo, :formaspago, '
+                      ':edad)')
         query.bindValue(':dni', str(cliente[0]))
         query.bindValue(':apellidos', str(cliente[1]))
         query.bindValue(':nombre', str(cliente[2]))
@@ -358,11 +338,7 @@ class Clientes:
 
     @staticmethod
     def db_cargar_cliente():
-        """
-        Este metodo carga un cliente desde la base de datos a traves de una query que usa
-        el dni que este escrito en el editBox de DNI de la ventana principal.
-        :return:
-        """
+
         dni = var.ui.edit_dni.text()
         query = QtSql.QSqlQuery()
         query.prepare('select * from clientes where dni = :dni')
@@ -391,10 +367,7 @@ class Clientes:
 
     @staticmethod
     def db_mostrar_clientes():
-        '''
-        Metodo que carga el DNI, nombre y apellidos en la tabla de la ventana principal.
-        :return:
-        '''
+
         index = 0
         query = QtSql.QSqlQuery()
         query.prepare('select dni, apellidos, nombre from clientes')
@@ -413,10 +386,7 @@ class Clientes:
 
     @staticmethod
     def db_baja_cliente(dni):
-        ''''
-        Metodo para eliminar cliente. Se llama desde fichero clientes.py
-        :return None
-        '''
+
         query = QtSql.QSqlQuery()
         query.prepare('delete from clientes where dni = :dni')
         query.bindValue(':dni', dni)
@@ -428,10 +398,7 @@ class Clientes:
 
     @staticmethod
     def db_modif_cliente(codigo, newdata):
-        ''''
-           modulo para modificar cliente. se llama desde fichero clientes.py
-           :return None
-           '''
+
         query = QtSql.QSqlQuery()
         codigo = int(codigo)
         query.prepare('update clientes set dni=:dni, apellidos=:apellidos, nombre=:nombre, fechalta=:fechalta, '

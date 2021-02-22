@@ -1,11 +1,10 @@
-from PyQt5 import QtPrintSupport
+from PyQt5 import QtPrintSupport, QtSql
 
 from modulos import productos as p
 from modulos import clientes as c
 from modulos import facturas as f
 from modulos import ventas as v
 import impresora
-import conexion
 import events
 import sys
 import var
@@ -66,7 +65,6 @@ class Main(QtWidgets.QMainWindow):
         var.dlgSalir = DialogSalir()
         var.dlgBuscador = DialogBuscador()
         var.dlgImprimir = DialogImpresora()
-        var.dni_valido = False
 
         var.ui.actionSalir.triggered.connect(events.Eventos.salir)
         var.ui.actionsalir.triggered.connect(events.Eventos.salir)
@@ -75,13 +73,30 @@ class Main(QtWidgets.QMainWindow):
         var.ui.action_about.triggered.connect(events.Eventos.about)
         var.ui.action_i_clientes.triggered.connect(impresora.Printer.informe_cliente)
         var.ui.action_i_productos.triggered.connect(impresora.Printer.informe_productos)
+        var.ui.action_i_facturas.triggered.connect(impresora.Printer.informe_facturas)
+        var.ui.action_i_fac_cliente.triggered.connect(impresora.Printer.informe_facturas_cliente)
+        var.ui.statusbar.addPermanentWidget(var.ui.lbl_status, 1)
+        var.ui.lbl_status.setText('Buenos Días')
 
-        conexion.Conexion.db_connect(var.filebd)
+        self.db_connect(var.filebd)
 
         c.Clientes.crear_modulo()
         p.Productos.crear_modulo()
         f.Facturas.crear_modulo()
         v.Ventas.crear_modulo()
+
+    @staticmethod
+    def db_connect(filename):
+        db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
+        db.setDatabaseName(filename)
+        if not db.open():
+            QtWidgets.QMessageBox.critical(None, 'No se puede abrir la base de datos',
+                                           'No se puede establecer conexion.\n'
+                                           'Haz Click para Cancelar.', QtWidgets.QMessageBox.Cancel)
+            return False
+        else:
+            print('Conexión Establecida')
+        return True
 
     def closeEvent(self, event):
         if event:

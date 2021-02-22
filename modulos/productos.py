@@ -11,12 +11,12 @@ class DialogEliminarProducto(QtWidgets.QDialog):
         Productos.dlgEliminarProducto = Ui_ven_confirmacion()
         Productos.dlgEliminarProducto.setupUi(self)
         self.pregunta = Productos.dlgEliminarProducto.lbl_pregunta
-        Productos.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(Productos.baja_producto)
+        Productos.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            Productos.baja_producto)
         Productos.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
 
 
 class Productos:
-
     dlgEliminarProducto = None
 
     @classmethod
@@ -24,13 +24,13 @@ class Productos:
         cls.dlgEliminarProducto = DialogEliminarProducto()
 
         var.ui.btn_pro_salir.clicked.connect(events.Eventos.salir)
-        var.ui.btn_pro_guardar.clicked.connect(Productos.alta_producto)
+        var.ui.btn_pro_guardar.clicked.connect(cls.alta_producto)
         var.ui.tbl_pro_tabla.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
-        var.ui.tbl_pro_tabla.clicked.connect(Productos.sel_producto)
-        var.ui.btn_pro_eliminar.clicked.connect(Productos.eliminar_producto)
-        var.ui.btn_pro_limpiar.clicked.connect(Productos.limpiar_campos)
-        var.ui.btn_pro_modificar.clicked.connect(events.Eventos.modificar_producto)
-        var.ui.btn_pro_recargar.clicked.connect(Productos.recargar)
+        var.ui.tbl_pro_tabla.clicked.connect(cls.sel_producto)
+        var.ui.btn_pro_eliminar.clicked.connect(cls.eliminar_producto)
+        var.ui.btn_pro_limpiar.clicked.connect(cls.limpiar_campos)
+        var.ui.btn_pro_modificar.clicked.connect(cls.modificar_producto)
+        var.ui.btn_pro_recargar.clicked.connect(cls.recargar)
 
         cls.db_actualizar_tabla_pro()
 
@@ -100,7 +100,7 @@ class Productos:
             print('Error en baja_producto: %s ' % str(error))
 
     @classmethod
-    def modif_producto(cls):
+    def modificar_producto(cls):
         try:
             codigo = var.ui.lbl_pro_muestra_codigo.text()
             newdata = [var.ui.edit_pro_nombre.text(), var.ui.dspin_pro_precio.value(), var.ui.spin_pro_stock.value()]
@@ -198,7 +198,6 @@ class Productos:
         query.bindValue(':precio', round(nuevos_datos[1], 2))
         query.bindValue(':stock', nuevos_datos[2])
         if query.exec_():
-            print('Producto modificado')
             var.ui.lbl_status.setText('El producto  ' + str(nuevos_datos[0]) + ' ha sido modificado')
         else:
             print("Error modificar producto conexion: ", query.lastError().text())

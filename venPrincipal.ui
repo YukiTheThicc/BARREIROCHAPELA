@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1251</width>
-    <height>888</height>
+    <height>891</height>
    </rect>
   </property>
   <property name="palette">
@@ -2276,7 +2276,7 @@
               <enum>Qt::ElideMiddle</enum>
              </property>
              <property name="gridStyle">
-              <enum>Qt::DotLine</enum>
+              <enum>Qt::SolidLine</enum>
              </property>
              <property name="sortingEnabled">
               <bool>false</bool>
@@ -3619,7 +3619,7 @@
          <item row="8" column="5" colspan="12">
           <widget class="QTableWidget" name="tbl_ventas_lista">
            <property name="sizeAdjustPolicy">
-            <enum>QAbstractScrollArea::AdjustToContents</enum>
+            <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
            </property>
            <property name="alternatingRowColors">
             <bool>true</bool>
@@ -3628,7 +3628,7 @@
             <enum>Qt::ElideMiddle</enum>
            </property>
            <property name="gridStyle">
-            <enum>Qt::DotLine</enum>
+            <enum>Qt::SolidLine</enum>
            </property>
            <property name="sortingEnabled">
             <bool>false</bool>
@@ -4308,7 +4308,7 @@
             <enum>Qt::ElideMiddle</enum>
            </property>
            <property name="gridStyle">
-            <enum>Qt::DotLine</enum>
+            <enum>Qt::SolidLine</enum>
            </property>
            <property name="sortingEnabled">
             <bool>false</bool>
@@ -4431,7 +4431,7 @@
          <item row="4" column="5">
           <widget class="QLabel" name="lbl_fac_nombre">
            <property name="text">
-            <string>Nombre Cliente</string>
+            <string>Apellidos Cliente</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -4793,7 +4793,7 @@
               <enum>Qt::ElideMiddle</enum>
              </property>
              <property name="gridStyle">
-              <enum>Qt::DotLine</enum>
+              <enum>Qt::SolidLine</enum>
              </property>
              <property name="sortingEnabled">
               <bool>false</bool>
@@ -6250,6 +6250,8 @@
     <addaction name="action_i_clientes"/>
     <addaction name="action_i_productos"/>
     <addaction name="action_i_facturas"/>
+    <addaction name="action_i_fac_cliente"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuInformes"/>
@@ -6339,20 +6341,20 @@
     <string>Informe de Facturas</string>
    </property>
   </action>
+  <action name="action_i_fac_cliente">
+   <property name="text">
+    <string>Informes de las facturas de un clliente</string>
+   </property>
+  </action>
  </widget>
- <resources>
-  <include location="../img/toolbar_backup.qrc"/>
-  <include location="../img/toolbar_buscador.qrc"/>
-  <include location="../img/toolbar_impresora.qrc"/>
-  <include location="../img/toolbar_salir.qrc"/>
- </resources>
+ <resources/>
  <connections/>
  <buttongroups>
+  <buttongroup name="grp_rbt_sex"/>
   <buttongroup name="grp_chk_pago">
    <property name="exclusive">
     <bool>false</bool>
    </property>
   </buttongroup>
-  <buttongroup name="grp_rbt_sex"/>
  </buttongroups>
 </ui>

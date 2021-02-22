@@ -19,7 +19,7 @@ class Eventos:
                 sys.exit()
             else:
                 var.dlgSalir.close()
-                event.ignore()  # necesario para que ignore X de la ventana
+                event.ignore()
         except Exception as error:
             print('Error %s' % str(error))
 
@@ -64,47 +64,8 @@ class Eventos:
             print('Error: %s' % str(error))
 
     @staticmethod
-    def cargar_prov():
-        '''
-        Carga las provincias al iniciar el programa
-        :return:
-        '''
-        try:
-            prov = ['','Pontevedra','A Coruña','Lugo','Ourense']
-            for i in prov:
-                var.ui.cmb_prov.addItem(i)
-        except Exception as error:
-            print('Error %s' % str(error))
-
-    @staticmethod
     def about():
         try:
             var.dlgAbout.show()
         except Exception as error:
             print('Error en about events %s' % str(error))
-
-# =============================================== EVENTOS PARA PRODUCTOS ===============================================
-
-
-
-    @staticmethod
-    def modificar_producto():
-        """
-        Funcion para llamar al dialogo de confirmacion y recoger el resultado
-        :return:
-        """
-        try:
-            codigo = var.ui.lbl_pro_muestra_codigo.text()
-            nombre = var.ui.lbl_pro_nombre.text()
-            print(nombre)
-            if codigo != '':
-                if nombre != '':
-                    p.Productos.modif_producto()
-                else:
-                    Eventos.aviso("Necesita un nombre")
-            else:
-                Eventos.aviso("Seleccione un producto")
-        except Exception as error:
-            print('Error en modificar_producto events: %s' % str(error))
-
-# ============================================ EVENTOS PARA FACTURAS/VENTAS ============================================
