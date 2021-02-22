@@ -21,13 +21,12 @@ class DialogCalendar(QtWidgets.QDialog):
 class Facturas:
 
     dlg_calendar = None
-    subtotal = 0.00
 
     @classmethod
     def crear_modulo(cls):
         """
 
-
+        Modulo que crea las conexiones a eventos y ventanas de dialogo necesarias para el funcionamiento del
 
         :return:
         :rtype:
@@ -36,6 +35,7 @@ class Facturas:
         cls.dlg_calendar = DialogCalendar()
 
         var.ui.btn_fac_calendar.clicked.connect(Facturas.abrir_calendar)
+
 
     @classmethod
     def abrir_calendar(cls):
@@ -231,6 +231,14 @@ class Facturas:
 
     @classmethod
     def db_borrar_factura(cls, codigo):
+        """
+
+
+
+        :param codigo:
+        :return:
+
+        """
         query = QtSql.QSqlQuery()
         query.prepare('delete from facturas where codfac = :codigo')
         query.bindValue(':codigo', int(codigo))

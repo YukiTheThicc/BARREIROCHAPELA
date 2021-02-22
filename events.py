@@ -85,22 +85,7 @@ class Eventos:
 
 # =============================================== EVENTOS PARA PRODUCTOS ===============================================
 
-    @staticmethod
-    def eliminar_producto():
-        """
-        Funcion para llamar al dialogo de confirmacion y recoger el resultado
-        :return:
-        """
-        try:
-            codigo = var.ui.lbl_pro_muestra_codigo.text()
-            if codigo != '':
-                var.dlgEliminarProducto.show()
-                var.dlgEliminarProducto.pregunta.setText("Esta seguro/a que quiere borrar\n"
-                                                         "este producto?")
-            else:
-                Eventos.aviso("Seleccione un producto")
-        except Exception as error:
-            print('Error: %s' % str(error))
+
 
     @staticmethod
     def modificar_producto():

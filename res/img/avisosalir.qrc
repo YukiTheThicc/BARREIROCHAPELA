@@ -1,5 +1,5 @@
 <RCC>
   <qresource prefix="avisosalir">
-    <file>img/iconoaviso.png</file>
+    <file>iconoaviso.png</file>
   </qresource>
 </RCC>

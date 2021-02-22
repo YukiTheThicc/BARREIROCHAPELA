@@ -34,7 +34,7 @@ class Ui_ven_aviso(object):
         self.lbl_icono.setGeometry(QtCore.QRect(40, 20, 61, 61))
         self.lbl_icono.setMinimumSize(QtCore.QSize(51, 0))
         self.lbl_icono.setText("")
-        self.lbl_icono.setPixmap(QtGui.QPixmap(":/avisosalir/img/iconoaviso.png"))
+        self.lbl_icono.setPixmap(QtGui.QPixmap(":/avisosalir/iconoaviso.png"))
         self.lbl_icono.setScaledContents(True)
         self.lbl_icono.setObjectName("lbl_icono")
 
@@ -46,3 +46,5 @@ class Ui_ven_aviso(object):
         ven_aviso.setWindowTitle(_translate("ven_aviso", "Aviso"))
         self.btn_ok.setText(_translate("ven_aviso", "OK"))
         self.lbl_mensaje.setText(_translate("ven_aviso", "Aviso por defecto"))
+
+import res.rc.avisosalir_rc

@@ -75,7 +75,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="res/avisosalir.qrc">:/avisosalir/img/iconoaviso.png</pixmap>
+    <pixmap resource="../img/avisosalir.qrc">:/avisosalir/iconoaviso.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -83,7 +83,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="res/avisosalir.qrc"/>
+  <include location="../img/avisosalir.qrc"/>
  </resources>
  <connections/>
 </ui>

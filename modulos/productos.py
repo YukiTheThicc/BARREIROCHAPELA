@@ -7,18 +7,20 @@ from venConfirmacion import *
 class DialogEliminarProducto(QtWidgets.QDialog):
     def __init__(self):
         super(DialogEliminarProducto, self).__init__()
-        var.dlgEliminarProducto = Ui_ven_confirmacion()
-        var.dlgEliminarProducto.setupUi(self)
-        self.pregunta = var.dlgEliminarProducto.lbl_pregunta
-        var.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(Productos.baja_producto)
-        var.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
+        Productos.dlgEliminarProducto = Ui_ven_confirmacion()
+        Productos.dlgEliminarProducto.setupUi(self)
+        self.pregunta = Productos.dlgEliminarProducto.lbl_pregunta
+        Productos.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(Productos.baja_producto)
+        Productos.dlgEliminarProducto.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
 
 
 class Productos:
 
-    @staticmethod
-    def crear_modulo():
-        var.dlgEliminarProducto = DialogEliminarProducto()
+    dlgEliminarProducto = None
+
+    @classmethod
+    def crear_modulo(cls):
+        cls.dlgEliminarProducto = DialogEliminarProducto()
 
         # Salir
         var.ui.btn_pro_salir.clicked.connect(events.Eventos.salir)
@@ -28,7 +30,7 @@ class Productos:
         var.ui.tbl_pro_tabla.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         var.ui.tbl_pro_tabla.clicked.connect(Productos.sel_producto)
         # Eliminar
-        var.ui.btn_pro_eliminar.clicked.connect(events.Eventos.eliminar_producto)
+        var.ui.btn_pro_eliminar.clicked.connect(Productos.eliminar_producto)
         # Limpiar
         var.ui.btn_pro_limpiar.clicked.connect(Productos.limpiar_campos)
         # Modificar
@@ -73,6 +75,23 @@ class Productos:
             var.ui.edit_pro_stock.setValue(0)
         except Exception as error:
             print('Error en limpiar_producto: %s ' % str(error))
+
+    @classmethod
+    def eliminar_producto(cls):
+        """
+        Funcion para llamar al dialogo de confirmacion y recoger el resultado
+        :return:
+        """
+        try:
+            codigo = var.ui.lbl_pro_muestra_codigo.text()
+            if codigo != '':
+                cls.dlgEliminarProducto.show()
+                cls.dlgEliminarProducto.pregunta.setText("Esta seguro/a que quiere borrar\n"
+                                                         "este producto?")
+            else:
+                events.Eventos.aviso("Seleccione un producto")
+        except Exception as error:
+            print('Error: %s' % str(error))
 
     @staticmethod
     def baja_producto():

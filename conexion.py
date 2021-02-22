@@ -79,6 +79,12 @@ class Conexion():
 
     @staticmethod
     def modif_producto(codigo, nuevos_datos):
+        """
+
+        :param codigo:
+        :param nuevos_datos:
+        :return:
+        """
         query = QtSql.QSqlQuery()
         codigo = int(codigo)
         query.prepare('update articulos set nombre=:nombre, precio_unidad=:precio, stock=:stock '
@@ -95,6 +101,11 @@ class Conexion():
 
     @staticmethod
     def buscar_producto(nombre):
+        """
+
+        :param nombre:
+        :return:
+        """
         query = QtSql.QSqlQuery()
         query.prepare('select * from articulos where nombre = :nombre')
         query.bindValue(':nombre', nombre)

@@ -1,5 +1,5 @@
 <RCC>
   <qresource prefix="icono">
-    <file>img/impresora.png</file>
+    <file>impresora.png</file>
   </qresource>
 </RCC>

@@ -546,7 +546,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pnl_client">
        <attribute name="title">
@@ -2368,20 +2368,98 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
+         <item row="3" column="7">
+          <widget class="QPushButton" name="btn_fac_calendar">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="13">
+          <widget class="QLabel" name="lbl_fac_total">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>TOTAL</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="14" colspan="3">
+          <widget class="QLabel" name="lbl_fac_ressubtotal">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(170, 255, 255);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="8" colspan="2">
+          <spacer name="horizontalSpacer_23">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="4" column="3">
           <widget class="QLineEdit" name="edit_fac_dni">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 254, 207);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QLabel" name="lbl_fac_dni">
-           <property name="text">
-            <string>DNI Cliente</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -2398,22 +2476,6 @@
            </property>
           </spacer>
          </item>
-         <item row="3" column="3">
-          <widget class="QLabel" name="lbl_fac_numero">
-           <property name="maximumSize">
-            <size>
-             <width>64</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(170, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
          <item row="6" column="0" colspan="18">
           <widget class="Line" name="line_2">
            <property name="orientation">
@@ -2428,10 +2490,29 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="18">
-          <widget class="Line" name="line_13">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="4" column="2">
+          <widget class="QLabel" name="lbl_fac_dni">
+           <property name="text">
+            <string>DNI Cliente</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QLabel" name="lbl_fac_numero">
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(170, 255, 255);</string>
+           </property>
+           <property name="text">
+            <string/>
            </property>
           </widget>
          </item>
@@ -2450,19 +2531,6 @@
          </item>
          <item row="10" column="6">
           <spacer name="horizontalSpacer_25">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="11" column="5" colspan="8">
-          <spacer name="horizontalSpacer_21">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -3011,6 +3079,26 @@
             <set>Qt::AlignCenter</set>
            </property>
           </widget>
+         </item>
+         <item row="1" column="0" colspan="18">
+          <widget class="Line" name="line_13">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="5" colspan="8">
+          <spacer name="horizontalSpacer_21">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item row="7" column="5" colspan="13">
           <widget class="QLabel" name="lbl_fac_ventas">
@@ -3648,18 +3736,24 @@
            </column>
           </widget>
          </item>
-         <item row="10" column="5">
-          <spacer name="horizontalSpacer_27">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+         <item row="10" column="14" colspan="3">
+          <widget class="QLabel" name="lbl_fac_resiva">
+           <property name="minimumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>48</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(170, 255, 255);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </item>
          <item row="11" column="14" colspan="3">
           <widget class="QLabel" name="lbl_fac_restotal">
@@ -3680,6 +3774,19 @@
            </property>
           </widget>
          </item>
+         <item row="10" column="5">
+          <spacer name="horizontalSpacer_27">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="10" column="10" colspan="3">
           <spacer name="horizontalSpacer_22">
            <property name="orientation">
@@ -3693,22 +3800,10 @@
            </property>
           </spacer>
          </item>
-         <item row="10" column="14" colspan="3">
-          <widget class="QLabel" name="lbl_fac_resiva">
-           <property name="minimumSize">
-            <size>
-             <width>48</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(170, 255, 255);</string>
-           </property>
+         <item row="3" column="2">
+          <widget class="QLabel" name="lbl_fac_numfact">
            <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
+            <string>Nº Factura</string>
            </property>
           </widget>
          </item>
@@ -3722,13 +3817,6 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
-          <widget class="QLabel" name="lbl_fac_numfact">
-           <property name="text">
-            <string>Nº Factura</string>
-           </property>
-          </widget>
-         </item>
          <item row="9" column="13">
           <widget class="QLabel" name="lbl_fac_subtotal">
            <property name="text">
@@ -3739,176 +3827,10 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="14" colspan="3">
-          <widget class="QLabel" name="lbl_fac_ressubtotal">
-           <property name="minimumSize">
-            <size>
-             <width>48</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(170, 255, 255);</string>
-           </property>
+         <item row="3" column="5">
+          <widget class="QLabel" name="lbl_fac_fecha">
            <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="11" column="13">
-          <widget class="QLabel" name="lbl_fac_total">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>TOTAL</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="13">
-          <widget class="QPushButton" name="btn_fac_recargar">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../img/reload.png</normaloff>../img/reload.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="12">
-          <widget class="QPushButton" name="btn_fac_buscar">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../img/lupa.png</normaloff>../img/lupa.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="10" column="8" colspan="2">
-          <spacer name="horizontalSpacer_23">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="3" column="7">
-          <widget class="QPushButton" name="btn_fac_calendar">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../img/calendar.png</normaloff>../img/calendar.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
+            <string>Fecha Factura</string>
            </property>
           </widget>
          </item>
@@ -3919,82 +3841,11 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="5">
-          <widget class="QLabel" name="lbl_fac_fecha">
+         <item row="3" column="8">
+          <widget class="QPushButton" name="btn_fac_facturar">
            <property name="text">
-            <string>Fecha Factura</string>
+            <string>Facturar</string>
            </property>
-          </widget>
-         </item>
-         <item row="8" column="0" rowspan="4" colspan="4">
-          <widget class="QTableWidget" name="tbl_fac_listfact">
-           <property name="sizeAdjustPolicy">
-            <enum>QAbstractScrollArea::AdjustToContents</enum>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="textElideMode">
-            <enum>Qt::ElideMiddle</enum>
-           </property>
-           <property name="gridStyle">
-            <enum>Qt::DotLine</enum>
-           </property>
-           <property name="sortingEnabled">
-            <bool>false</bool>
-           </property>
-           <attribute name="horizontalHeaderCascadingSectionResizes">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>140</number>
-           </attribute>
-           <attribute name="horizontalHeaderMinimumSectionSize">
-            <number>20</number>
-           </attribute>
-           <attribute name="horizontalHeaderStretchLastSection">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="verticalHeaderCascadingSectionResizes">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="verticalHeaderMinimumSectionSize">
-            <number>23</number>
-           </attribute>
-           <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="verticalHeaderStretchLastSection">
-            <bool>false</bool>
-           </attribute>
-           <column>
-            <property name="text">
-             <string>Nº Factura</string>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Fecha</string>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
           </widget>
          </item>
          <item row="7" column="0" colspan="4">
@@ -4535,62 +4386,75 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="8">
-          <widget class="QPushButton" name="btn_fac_facturar">
-           <property name="text">
-            <string>Facturar</string>
+         <item row="8" column="0" rowspan="4" colspan="4">
+          <widget class="QTableWidget" name="tbl_fac_listfact">
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustToContents</enum>
            </property>
-          </widget>
-         </item>
-         <item row="3" column="16">
-          <widget class="QPushButton" name="btn_fac_check">
-           <property name="enabled">
+           <property name="alternatingRowColors">
             <bool>true</bool>
            </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+           <property name="textElideMode">
+            <enum>Qt::ElideMiddle</enum>
            </property>
-           <property name="minimumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
+           <property name="gridStyle">
+            <enum>Qt::DotLine</enum>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
+           <property name="sortingEnabled">
+            <bool>false</bool>
            </property>
-           <property name="baseSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../img/check.png</normaloff>../img/check.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>32</width>
-             <height>32</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="9" colspan="2">
-          <widget class="QPushButton" name="btn_fac_anular">
-           <property name="text">
-            <string>Anular</string>
-           </property>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>140</number>
+           </attribute>
+           <attribute name="horizontalHeaderMinimumSectionSize">
+            <number>20</number>
+           </attribute>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderMinimumSectionSize">
+            <number>23</number>
+           </attribute>
+           <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderStretchLastSection">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Nº Factura</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="textAlignment">
+             <set>AlignCenter</set>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Fecha</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="textAlignment">
+             <set>AlignCenter</set>
+            </property>
+           </column>
           </widget>
          </item>
          <item row="4" column="5">
@@ -4603,15 +4467,15 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="15" rowspan="2">
-          <widget class="Line" name="line_7">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+         <item row="3" column="9" colspan="2">
+          <widget class="QPushButton" name="btn_fac_anular">
+           <property name="text">
+            <string>Anular</string>
            </property>
           </widget>
          </item>
          <item row="4" column="16">
-          <widget class="QPushButton" name="btn_fac_cross">
+          <widget class="QPushButton" name="btn_venta_del">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
              <horstretch>0</horstretch>
@@ -4655,6 +4519,142 @@
           <widget class="QLineEdit" name="edit_fac_nombre">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(255, 254, 207);</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="13">
+          <widget class="QPushButton" name="btn_fac_recargar">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../img/reload.png</normaloff>../img/reload.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="12">
+          <widget class="QPushButton" name="btn_fac_buscar">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../img/lupa.png</normaloff>../img/lupa.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="15" rowspan="2">
+          <widget class="Line" name="line_7">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="16">
+          <widget class="QPushButton" name="btn_venta_add">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../img/add.jpg</normaloff>../img/add.jpg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -6239,8 +6239,8 @@
   </action>
   <action name="actionImpresora">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icono/img/impresora.png</normaloff>:/icono/img/impresora.png</iconset>
+    <iconset resource="../img/toolbar_impresora.qrc">
+     <normaloff>:/icono/impresora.png</normaloff>:/icono/impresora.png</iconset>
    </property>
    <property name="text">
     <string>Impresora</string>
@@ -6251,8 +6251,8 @@
   </action>
   <action name="actionBuscador">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icono/img/carpeta.png</normaloff>:/icono/img/carpeta.png</iconset>
+    <iconset resource="../img/toolbar_buscador.qrc">
+     <normaloff>:/icono/carpeta.png</normaloff>:/icono/carpeta.png</iconset>
    </property>
    <property name="text">
     <string>Buscador</string>
@@ -6263,8 +6263,8 @@
   </action>
   <action name="actionbackup">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icono/img/backup.png</normaloff>:/icono/img/backup.png</iconset>
+    <iconset resource="../img/toolbar_backup.qrc">
+     <normaloff>:/icono/backup.png</normaloff>:/icono/backup.png</iconset>
    </property>
    <property name="text">
     <string>backup</string>
@@ -6272,8 +6272,8 @@
   </action>
   <action name="actionsalir">
    <property name="icon">
-    <iconset>
-     <normaloff>:/icono/img/salir.png</normaloff>:/icono/img/salir.png</iconset>
+    <iconset resource="../img/toolbar_salir.qrc">
+     <normaloff>:/icono/salir.png</normaloff>:/icono/salir.png</iconset>
    </property>
    <property name="text">
     <string>salir</string>
@@ -6300,7 +6300,12 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../img/toolbar_backup.qrc"/>
+  <include location="../img/toolbar_buscador.qrc"/>
+  <include location="../img/toolbar_impresora.qrc"/>
+  <include location="../img/toolbar_salir.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="grp_chk_pago">
