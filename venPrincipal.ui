@@ -546,7 +546,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="pnl_client">
        <attribute name="title">
@@ -1115,20 +1115,40 @@
          <item row="4" column="0" colspan="2">
           <layout class="QGridLayout" name="grid_btn">
            <item row="0" column="0">
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="1">
             <widget class="QPushButton" name="btn_guardar">
              <property name="text">
               <string>Guardar</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
+           <item row="0" column="3">
             <widget class="QPushButton" name="btn_eliminar">
              <property name="text">
               <string>Eliminar</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
+           <item row="0" column="5">
+            <widget class="QPushButton" name="btn_salir">
+             <property name="text">
+              <string>Salir</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
             <widget class="QPushButton" name="btn_modificar">
              <property name="text">
               <string>Modificar</string>
@@ -1136,20 +1156,13 @@
             </widget>
            </item>
            <item row="0" column="4">
-            <widget class="QPushButton" name="btn_salir">
-             <property name="text">
-              <string>Salir</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
             <widget class="QPushButton" name="btn_limpiar">
              <property name="text">
               <string>Limpiar</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
+           <item row="1" column="3">
             <spacer name="verticalSpacer_4">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1161,6 +1174,19 @@
               <size>
                <width>20</width>
                <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="6">
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -2265,6 +2291,10 @@
                <width>981</width>
                <height>461</height>
               </rect>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(245, 245, 245);
+alternate-background-color: rgb(210, 210, 210);</string>
              </property>
              <property name="sizeAdjustPolicy">
               <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -3618,6 +3648,10 @@
          </item>
          <item row="8" column="5" colspan="12">
           <widget class="QTableWidget" name="tbl_ventas_lista">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(245, 245, 245);
+alternate-background-color: rgb(210, 210, 210);</string>
+           </property>
            <property name="sizeAdjustPolicy">
             <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
            </property>
@@ -4298,6 +4332,10 @@
          </item>
          <item row="8" column="0" rowspan="4" colspan="4">
           <widget class="QTableWidget" name="tbl_fac_listfact">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(245, 245, 245);
+alternate-background-color: rgb(210, 210, 210);</string>
+           </property>
            <property name="sizeAdjustPolicy">
             <enum>QAbstractScrollArea::AdjustToContents</enum>
            </property>
@@ -4783,6 +4821,10 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(245, 245, 245);
+alternate-background-color: rgb(210, 210, 210);</string>
+             </property>
              <property name="sizeAdjustPolicy">
               <enum>QAbstractScrollArea::AdjustToContents</enum>
              </property>
@@ -5058,42 +5100,7 @@
          </item>
          <item row="7" column="0" colspan="14">
           <layout class="QGridLayout" name="grid_pro_boton">
-           <item row="0" column="3">
-            <widget class="QPushButton" name="btn_pro_limpiar">
-             <property name="text">
-              <string>Limpiar</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="btn_pro_eliminar">
-             <property name="text">
-              <string>Eliminar</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="btn_pro_guardar">
-             <property name="text">
-              <string>Guardar</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="btn_pro_modificar">
-             <property name="text">
-              <string>Modificar</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QPushButton" name="btn_pro_salir">
-             <property name="text">
-              <string>Salir</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
+           <item row="1" column="3">
             <spacer name="verticalSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -5105,6 +5112,67 @@
               <size>
                <width>20</width>
                <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="btn_pro_modificar">
+             <property name="text">
+              <string>Modificar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="5">
+            <widget class="QPushButton" name="btn_pro_salir">
+             <property name="text">
+              <string>Salir</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="btn_pro_guardar">
+             <property name="text">
+              <string>Guardar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="btn_pro_eliminar">
+             <property name="text">
+              <string>Eliminar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4">
+            <widget class="QPushButton" name="btn_pro_limpiar">
+             <property name="text">
+              <string>Limpiar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <spacer name="horizontalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="6">
+            <spacer name="horizontalSpacer_16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
               </size>
              </property>
             </spacer>
@@ -6235,11 +6303,11 @@
     <property name="title">
      <string>Archivo</string>
     </property>
-    <addaction name="actionSalir"/>
+    <addaction name="action_menu_salir"/>
    </widget>
    <widget class="QMenu" name="menuAcerca_de">
     <property name="title">
-     <string>Ayuda</string>
+     <string>Acerca de</string>
     </property>
     <addaction name="action_about"/>
    </widget>
@@ -6253,8 +6321,18 @@
     <addaction name="action_i_fac_cliente"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuHerramientas">
+    <property name="title">
+     <string>Herramientas</string>
+    </property>
+    <addaction name="action_importar_productos"/>
+    <addaction name="separator"/>
+    <addaction name="action_menu_backup"/>
+    <addaction name="action_menu_recuperar"/>
+   </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuInformes"/>
+   <addaction name="menuHerramientas"/>
    <addaction name="menuAcerca_de"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -6268,18 +6346,18 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionImpresora"/>
-   <addaction name="actionBuscador"/>
-   <addaction name="actionbackup"/>
+   <addaction name="action_impresora"/>
+   <addaction name="action_recuperar"/>
+   <addaction name="action_backup"/>
    <addaction name="separator"/>
-   <addaction name="actionsalir"/>
+   <addaction name="action_salir"/>
   </widget>
-  <action name="actionSalir">
+  <action name="action_menu_salir">
    <property name="text">
     <string>Salir</string>
    </property>
   </action>
-  <action name="actionImpresora">
+  <action name="action_impresora">
    <property name="icon">
     <iconset>
      <normaloff>res/img/impresora.png</normaloff>res/img/impresora.png</iconset>
@@ -6291,34 +6369,34 @@
     <string>Impresora</string>
    </property>
   </action>
-  <action name="actionBuscador">
+  <action name="action_recuperar">
    <property name="icon">
     <iconset>
      <normaloff>res/img/carpeta.png</normaloff>res/img/carpeta.png</iconset>
    </property>
    <property name="text">
-    <string>Buscador</string>
+    <string>Recuperar</string>
    </property>
    <property name="toolTip">
     <string>Buscador</string>
    </property>
   </action>
-  <action name="actionbackup">
+  <action name="action_backup">
    <property name="icon">
     <iconset>
      <normaloff>res/img/backup.png</normaloff>res/img/backup.png</iconset>
    </property>
    <property name="text">
-    <string>backup</string>
+    <string>Backup</string>
    </property>
   </action>
-  <action name="actionsalir">
+  <action name="action_salir">
    <property name="icon">
     <iconset>
      <normaloff>res/img/salir.png</normaloff>res/img/salir.png</iconset>
    </property>
    <property name="text">
-    <string>salir</string>
+    <string>Salir</string>
    </property>
   </action>
   <action name="action_i_clientes">
@@ -6344,6 +6422,21 @@
   <action name="action_i_fac_cliente">
    <property name="text">
     <string>Informes de las facturas de un clliente</string>
+   </property>
+  </action>
+  <action name="action_importar_productos">
+   <property name="text">
+    <string>Importar Productos</string>
+   </property>
+  </action>
+  <action name="action_menu_backup">
+   <property name="text">
+    <string>Crear Copia de Seguridad</string>
+   </property>
+  </action>
+  <action name="action_menu_recuperar">
+   <property name="text">
+    <string>Recuperar copia de seguridad</string>
    </property>
   </action>
  </widget>

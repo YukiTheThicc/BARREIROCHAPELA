@@ -23,7 +23,7 @@ class Productos:
     def crear_modulo(cls):
         cls.dlgEliminarProducto = DialogEliminarProducto()
 
-        var.ui.btn_pro_salir.clicked.connect(events.Eventos.salir)
+        var.ui.btn_pro_salir.clicked.connect(events.salir)
         var.ui.btn_pro_guardar.clicked.connect(cls.alta_producto)
         var.ui.tbl_pro_tabla.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         var.ui.tbl_pro_tabla.clicked.connect(cls.sel_producto)
@@ -36,6 +36,13 @@ class Productos:
 
     @classmethod
     def alta_producto(cls):
+        """
+
+        Recoge los datos de un productod e la interfaz.
+
+        :return: None
+
+        """
         nombre = var.ui.edit_pro_nombre.text()
         precio = var.ui.dspin_pro_precio.value()
         stock = var.ui.spin_pro_stock.value()
@@ -43,10 +50,17 @@ class Productos:
             to_insert = [nombre, precio, stock]
             cls.db_alta_producto(to_insert)
         else:
-            events.Eventos.aviso("Necesita un nombre")
+            events.aviso("Necesita un nombre")
 
     @staticmethod
     def sel_producto():
+        """
+
+        Pone los datos del producto seleccionado en la tabla en los campos de la interfaz de productos.
+
+        :return: None
+
+        """
         try:
             tupla_elegida = var.ui.tbl_pro_tabla.selectedItems()
             campos_producto = {"nombre": var.ui.edit_pro_nombre, "precio": var.ui.dspin_pro_precio,
@@ -60,23 +74,28 @@ class Productos:
 
     @staticmethod
     def limpiar_campos():
-        '''
-        limpia los datos del formulario cliente
-        :return: none
-        '''
+        """
+
+        Limpia los campos de la interfaz de productos.
+
+        :return: None
+
+        """
         try:
             var.ui.edit_pro_nombre.setText('')
             var.ui.lbl_pro_muestra_codigo.setText('')
             var.ui.dspin_pro_precio.setValue(0.01)
-            var.ui.edit_pro_stock.setValue(0)
+            var.ui.spin_pro_stock.setValue(0)
         except Exception as error:
-            print('Error en limpiar_producto: %s ' % str(error))
+            print('Error en limpiar_campos: %s ' % str(error))
 
     @classmethod
     def eliminar_producto(cls):
         """
-        Funcion para llamar al dialogo de confirmacion y recoger el resultado
-        :return:
+        Funcion para llamar al dialogo de confirmacion para eliminar a un producto.
+
+        :return: None
+
         """
         try:
             codigo = var.ui.lbl_pro_muestra_codigo.text()
@@ -85,12 +104,20 @@ class Productos:
                 cls.dlgEliminarProducto.pregunta.setText("Esta seguro/a que quiere borrar\n"
                                                          "este producto?")
             else:
-                events.Eventos.aviso("Seleccione un producto")
+                events.aviso("Seleccione un producto")
         except Exception as error:
-            print('Error: %s' % str(error))
+            print('Error en eliminar_producto: %s' % str(error))
 
     @classmethod
     def baja_producto(cls):
+        """
+
+        Recoge el código del producto y lo elimina de la base de datos, actualiza la tabla de productos y limpia los
+        campos de la interfaz.
+
+        :return: None
+
+        """
         try:
             codigo = var.ui.lbl_pro_muestra_codigo.text()
             cls.db_baja_producto(codigo)
@@ -101,36 +128,45 @@ class Productos:
 
     @classmethod
     def modificar_producto(cls):
+        """
+
+        Recoge los nuevos datos de un producto ya existente y llama a la función que los actualiza en la base de datos.
+
+        :return: None
+
+        """
         try:
             codigo = var.ui.lbl_pro_muestra_codigo.text()
             newdata = [var.ui.edit_pro_nombre.text(), var.ui.dspin_pro_precio.value(), var.ui.spin_pro_stock.value()]
             cls.db_modif_producto(codigo, newdata)
             cls.db_actualizar_tabla_pro()
         except Exception as error:
-            print('Error en modif_producto productos: %s ' % str(error))
+            print('Error en modificar_producto: %s ' % str(error))
 
     @classmethod
     def recargar(cls):
+        """
+
+        Recarga la tabla de productos y limpia los campos de la interfaz.
+
+        :return: None
+
+        """
         try:
             Productos.limpiar_campos()
             cls.db_actualizar_tabla_pro()
-            print('Recargando...')
         except Exception as error:
-            print('Error en recargar_producto: %s ' % str(error))
-
-    @classmethod
-    def buscar(cls):
-        try:
-            nombre = var.ui.lbl_pro_nombre.text()
-            if nombre != '':
-                cls.db_buscar_producto(nombre)
-            else:
-                print('Se ha intentado buscar por un nombre vacio')
-        except Exception as error:
-            print('Error en buscar_producto: %s ' % str(error))
+            print('Error en recargar: %s ' % str(error))
 
     @staticmethod
     def db_actualizar_tabla_pro():
+        """
+
+        Actualiza la tabla de productos leyendo los datos guardados en la base de datos.
+
+        :return: None
+
+        """
         index = 0
         query = QtSql.QSqlQuery()
         query.prepare('select codigo, nombre, precio_unidad, stock from articulos')
@@ -147,10 +183,18 @@ class Productos:
                 var.ui.tbl_pro_tabla.setItem(index, 3, QtWidgets.QTableWidgetItem(str(stock)))
                 index += 1
         else:
-            print("Error al actualizar la tabla de productos: ", query.lastError().text())
+            print("Error en db_actualizar_tabla_pro: ", query.lastError().text())
 
     @classmethod
     def db_alta_producto(cls, producto: [str, float, int]):
+        """
+
+        Inserta en la base de datos un producto con los datos pasados como parámetros.
+
+        :param producto: lista, datos del producto
+        :return: None
+
+        """
         query = QtSql.QSqlQuery()
         query.prepare('insert into articulos (nombre, precio_unidad, stock)'
                       'VALUES (:nombre, :precio_unidad, :stock)')
@@ -158,20 +202,20 @@ class Productos:
         query.bindValue(':precio_unidad', round(producto[1], 2))
         query.bindValue(':stock', producto[2])
         if query.exec_():
-            print("Inserción de Producto Correcta")
             cls.db_actualizar_tabla_pro()
             var.ui.lbl_status.setText('El producto ' + str(producto[0]) + ' ha sido dado de alta')
         else:
-            print("Error: ", query.lastError().text())
+            print("Error en db_alta_producto: ", query.lastError().text())
 
     @staticmethod
     def db_baja_producto(codigo):
         """
 
-        :param codigo:
-        :type codigo:
-        :return:
-        :rtype:
+        Da de baja en la base de datos el producto con el codigo pasado como parámetro.
+
+        :param codigo: int, codigo del producto
+        :return: None
+
         """
         query = QtSql.QSqlQuery()
         query.prepare('delete from articulos where codigo = :codigo')
@@ -179,15 +223,19 @@ class Productos:
         if query.exec_():
             var.ui.lbl_status.setText('Producto de codigo ' + codigo + ' dado de baja')
         else:
-            print("Error dando de baja a un prodcuto: ", query.lastError().text())
+            print("Error en db_baja_producto: ", query.lastError().text())
 
     @staticmethod
     def db_modif_producto(codigo, nuevos_datos):
         """
 
-        :param codigo:
-        :param nuevos_datos:
-        :return:
+        Modifica los datos del producto con el código pasado por parámetro con los nuevos datos pasados por parámetro
+        dentro de la base de datos.
+
+        :param codigo: int, codigo del producto
+        :param nuevos_datos: lista, datos del producto
+        :return: None
+
         """
         query = QtSql.QSqlQuery()
         codigo = int(codigo)
@@ -200,23 +248,48 @@ class Productos:
         if query.exec_():
             var.ui.lbl_status.setText('El producto  ' + str(nuevos_datos[0]) + ' ha sido modificado')
         else:
-            print("Error modificar producto conexion: ", query.lastError().text())
+            print("Error en db_modif_producto: ", query.lastError().text())
 
     @staticmethod
-    def db_buscar_producto(nombre):
+    def importar_producto(datos: [str, float, int]):
         """
 
-        :param nombre:
+        Importa un producto con los datos del producto pasados como parámetro. Si ya existe en la base actualiza el
+        precio y le suma el stock, y si no existe lo inserta con todos los datos.
+
+        :param datos:
         :return:
         """
-        query = QtSql.QSqlQuery()
-        query.prepare('select * from articulos where nombre = :nombre')
-        query.bindValue(':nombre', nombre)
-        if query.exec_():
-            while query.next():
-                var.ui.tbl_listcli.setRowCount(1)
-                var.ui.tbl_listcli.setItem(0, 0, QtWidgets.QTableWidgetItem(query.value(0)))
-                var.ui.tbl_listcli.setItem(0, 1, QtWidgets.QTableWidgetItem(nombre))
-                var.ui.tbl_listcli.setItem(0, 2, QtWidgets.QTableWidgetItem(query.value(2)))
-        else:
-            print("Error buscando cliente: ", query.lastError().text())
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare('select * from articulos where nombre = :nombre')
+            query.bindValue(':nombre', datos[0])
+            if query.exec_() and query.size() == 4:
+                while query.next():
+                    query_up = QtSql.QSqlQuery()
+                    codigo = int(query_up.value(0))
+                    nuevo_precio = datos[1]
+                    nuevo_stock = query_up.value(3) + datos[2]
+                    query_up.prepare('update articulos set nombre=:nombre, precio_unidad=:precio, stock=:stock '
+                                     'where codigo=:codigo')
+                    query_up.bindValue(':codigo', codigo)
+                    query_up.bindValue(':nombre', datos[0])
+                    query_up.bindValue(':precio', round(nuevo_precio, 2))
+                    query_up.bindValue(':stock', nuevo_stock)
+                    if query_up.exec_():
+                        pass
+                    else:
+                        print('Error en actualizar importar_producto')
+            else:
+                query_add = QtSql.QSqlQuery()
+                query_add.prepare('insert into articulos (nombre, precio_unidad, stock)'
+                                  'VALUES (:nombre, :precio_unidad, :stock)')
+                query_add.bindValue(':nombre', datos[0])
+                query_add.bindValue(':precio_unidad', round(datos[1], 2))
+                query_add.bindValue(':stock', datos[2])
+                if query_add.exec_():
+                    pass
+                else:
+                    print('Error en insertar importar_producto')
+        except Exception as error:
+            print('Error en importar_producto: %s' % str(error))

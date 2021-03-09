@@ -3,6 +3,39 @@ from PyQt5 import QtWidgets
 
 import var
 import modulos.productos as p
+from venConfirmacion import *
+
+
+class DialogEliminarVenta(QtWidgets.QDialog):
+    """
+
+    Clase de la ventana de diálogo que saltará al intentar eliminar un cliente
+
+    """
+
+    def __init__(self):
+        super(DialogEliminarVenta, self).__init__()
+        Ventas.DialogEliminarVenta = Ui_ven_confirmacion()
+        Ventas.DialogEliminarVenta.setupUi(self)
+        self.pregunta = Ventas.DialogEliminarVenta.lbl_pregunta
+        Ventas.DialogEliminarVenta.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            Ventas.anular_venta)
+        Ventas.DialogEliminarVenta.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
+
+
+def eliminar():
+    """
+
+    Funcion para llamar al dialogo de confirmacion para eliminar una venta
+
+    :return: None
+
+    """
+    try:
+        Ventas.DialogEliminarVenta.show()
+        Ventas.DialogEliminarVenta.pregunta.setText("Esta seguro/a que quiere borrar?")
+    except Exception as error:
+        print('Error: %s' % str(error))
 
 
 class Cmb_articulos(QtWidgets.QComboBox):
@@ -12,6 +45,7 @@ class Cmb_articulos(QtWidgets.QComboBox):
 
 
 class Ventas:
+    DialogEliminarVenta = None
     cmb_articulos = None
     sub_total = None
     iva = None
@@ -21,26 +55,26 @@ class Ventas:
     def crear_modulo(cls):
         """
 
+        Crea las ventanas y conexiones de la interfaz de ventas.
 
-
-        :return:
+        :return: None
 
         """
+        cls.DialogEliminarVenta = DialogEliminarVenta()
         cls.cmb_articulos = Cmb_articulos()
         cls.cargar_cmb_articulos()
 
         var.ui.tbl_ventas_lista.setSelectionBehavior(QtWidgets.QTableWidget.SelectRows)
         var.ui.btn_venta_add.clicked.connect(cls.procesar_venta)
-        var.ui.btn_venta_del.clicked.connect(cls.anular_venta)
+        var.ui.btn_venta_del.clicked.connect(eliminar)
 
     @classmethod
     def cargar_cmb_articulos(cls):
         """
 
+        Carga la combo box de artículos de la tabla según los artículos guardados en la base de datos
 
-
-        :return:
-        :rtype:
+        :return: None
 
         """
         cls.cmb_articulos.clear()
@@ -55,10 +89,11 @@ class Ventas:
     def setup_tabla_ventas(cls, i: int):
         """
 
+        Prepara la tabla de ventas para permitir la introducción de datos desde la tabla. Pone la siguiente fila como
+        editables y pone la combobox de artículos.
 
-
-        :param i:
-        :return:
+        :param i: int, índice actual de la tabla
+        :return: None
 
         """
         try:
@@ -75,6 +110,16 @@ class Ventas:
 
     @classmethod
     def procesar_venta(cls):
+        """
+
+        Procesa los datos de una venta y la inserta en la base de datos si es válida.
+
+        :return: None
+
+        Comprueba que haya suficiente stock, calcula los subtotales de la compra y actualiza el subtotalm total e
+        impuesto de la factura.
+
+        """
         try:
             new_venta = []
             articulo = cls.cmb_articulos.currentText()
@@ -85,17 +130,17 @@ class Ventas:
             cantidad = var.ui.tbl_ventas_lista.item(row, 2).text()
             cantidad = cantidad.replace(',', '.')
             precio = dato[1].replace(',', '.')
-            subtotal = round(float(cantidad) * float(dato[1]), 2)
-
-            new_venta.append(int(codfac))
-            new_venta.append(int(dato[0]))
-            new_venta.append(articulo)
-            new_venta.append(int(cantidad))
-            new_venta.append(round(float(precio), 2))
-            new_venta.append(subtotal)
-            new_venta.append(row)
 
             if codfac != '' and articulo != '' and cantidad != '':
+                subtotal = round(float(cantidad) * float(dato[1]), 2)
+                new_venta.append(int(codfac))
+                new_venta.append(int(dato[0]))
+                new_venta.append(articulo)
+                new_venta.append(int(cantidad))
+                new_venta.append(round(float(precio), 2))
+                new_venta.append(subtotal)
+                new_venta.append(row)
+
                 query = QtSql.QSqlQuery()
                 query.prepare('select stock from articulos where nombre = :articulo')
                 query.bindValue(':articulo', articulo)
@@ -123,6 +168,13 @@ class Ventas:
 
     @classmethod
     def mostrar_ventas(cls):
+        """
+
+        Muestra las ventas de una factura en la tavla de ventas.
+
+        :return: None
+
+        """
         try:
             cls.cmb_articulos = QtWidgets.QComboBox()
             cls.cargar_cmb_articulos()
@@ -134,19 +186,35 @@ class Ventas:
 
     @classmethod
     def anular_venta(cls):
+        """
+
+        Si la fila es una venta, recoge los datos y los envía para borrar la venta de la base de datos.
+
+        :return: None
+
+        """
         try:
             fila = var.ui.tbl_ventas_lista.selectedItems()
-            if fila:
+            if fila and len(fila) == 5:
                 fila = [dato.text() for dato in fila]
-            codventa = int(fila[0])
-            cls.db_anular_venta(codventa)
-            Ventas.mostrar_ventas()
-
+                codventa = int(fila[0])
+                cls.db_anular_venta(codventa)
+                Ventas.mostrar_ventas()
         except Exception as error:
             print('Error en anular_venta: %s' % str(error))
 
     @classmethod
     def db_insertar_venta(cls, venta, stock):
+        """
+
+        Inserta los datos de na venta en la base de datos y reduce el stock del artículo del que se ha realizado la
+        compra.
+
+        :param venta: datos de la venta
+        :param stock: stock del articulo
+        :return: None
+
+        """
         query = QtSql.QSqlQuery()
         query.prepare('insert into ventas (cod_factura_venta, cod_articulo_venta, cantidad, coste) VALUES ('
                       ':codfacventa, ' ':codarticventa, :cantidad, :precio )')
@@ -182,12 +250,10 @@ class Ventas:
     def db_recoger_codigo_precio(articulo: str):
         """
 
+        Recoge el precio del artículo y su código según el nombre.
 
-
-        :param articulo:
-        :type articulo:
-        :return:
-        :rtype:
+        :param articulo: str, nombre
+        :return: None
 
         """
         datos = []
@@ -203,6 +269,14 @@ class Ventas:
 
     @staticmethod
     def db_anular_venta(cod_venta):
+        """
+
+        Elimina de la base de datos una venta.
+
+        :param cod_venta:
+        :return: None
+
+        """
         query = QtSql.QSqlQuery()
         query.prepare('delete from ventas where cod_venta = :cod_venta')
         query.bindValue(':cod_venta', cod_venta)
@@ -213,6 +287,15 @@ class Ventas:
 
     @classmethod
     def db_ventas_factura(cls, codfac):
+        """
+
+        Selecciona de la base de datos las ventas de una factura, las pone en la tabla de ventas, y actualiza los
+        valores de subtotal, total e impuestos.
+
+        :param codfac: int codigo de factura
+        :return: None
+
+        """
         try:
             var.ui.tbl_ventas_lista.clearContents()
             var.subfac = 0.00

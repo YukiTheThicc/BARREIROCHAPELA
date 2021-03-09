@@ -1,9 +1,11 @@
-from PyQt5 import QtPrintSupport, QtSql
+from PyQt5 import QtPrintSupport
+from PyQt5.QtGui import QIcon
 
 from modulos import productos as p
 from modulos import clientes as c
 from modulos import facturas as f
 from modulos import ventas as v
+from conexion import *
 import impresora
 import events
 import sys
@@ -18,20 +20,20 @@ from venAcercaDe import *
 class DialogAviso(QtWidgets.QDialog):
     def __init__(self):
         super(DialogAviso, self).__init__()
-        var.dlgAviso = Ui_ven_aviso()
-        var.dlgAviso.setupUi(self)
-        var.dlgAviso.btn_ok.clicked.connect(self.close)
-        var.lbl_mensaje = var.dlgAviso.lbl_mensaje
+        var.dlg_aviso = Ui_ven_aviso()
+        var.dlg_aviso.setupUi(self)
+        var.dlg_aviso.btn_ok.clicked.connect(self.close)
+        var.lbl_mensaje = var.dlg_aviso.lbl_mensaje
         var.lbl_mensaje.setText("Mensaje por defecto")
 
 
 class DialogSalir(QtWidgets.QDialog):
     def __init__(self):
         super(DialogSalir, self).__init__()
-        var.dlgSalir = Ui_ven_confirmacion()
-        var.dlgSalir.setupUi(self)
-        var.lbl_pregunta = var.dlgSalir.lbl_pregunta
-        var.dlgSalir.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(events.Eventos.salir)
+        var.dlg_salir = Ui_ven_confirmacion()
+        var.dlg_salir.setupUi(self)
+        var.lbl_pregunta = var.dlg_salir.lbl_pregunta
+        var.dlg_salir.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(events.salir)
         var.lbl_pregunta.setText("")
 
 
@@ -50,27 +52,58 @@ class DialogImpresora(QtPrintSupport.QPrintDialog):
 class DialogAbout(QtWidgets.QDialog):
     def __init__(self):
         super(DialogAbout, self).__init__()
-        var.dlgAviso = Ui_ven_acercade()
-        var.dlgAviso.setupUi(self)
-        var.dlgAviso.btn_ok.clicked.connect(self.close)
+        var.dlg_aviso = Ui_ven_acercade()
+        var.dlg_aviso.setupUi(self)
+        var.dlg_aviso.btn_ok.clicked.connect(self.close)
+
+
+class DialogConfirmarImporte(QtWidgets.QDialog):
+    def __init__(self):
+        super(DialogConfirmarImporte, self).__init__()
+        var.dlg_confirmar_importe = Ui_ven_confirmacion()
+        var.dlg_confirmar_importe.setupUi(self)
+        self.pregunta = var.dlg_confirmar_importe.lbl_pregunta
+        self.filename = ""
+        var.dlg_confirmar_importe.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            events.importar_productos)
+        var.dlg_confirmar_importe.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
+
+
+def closeEvent(event):
+    if event:
+        events.salir(event)
 
 
 class Main(QtWidgets.QMainWindow):
     def __init__(self):
+        """
+
+        Crea la instancia del programa con todas las ventanas y conexiones necesarias para que la interfaz principal
+        funcione.
+
+        """
         super(Main, self).__init__()
         var.ui = Ui_venPrincipal()
         var.ui.setupUi(self)
-        var.dlgAbout = DialogAbout()
-        var.dlgAviso = DialogAviso()
-        var.dlgSalir = DialogSalir()
-        var.dlgBuscador = DialogBuscador()
-        var.dlgImprimir = DialogImpresora()
+        var.dlg_about = DialogAbout()
+        var.dlg_aviso = DialogAviso()
+        var.dlg_salir = DialogSalir()
+        var.dlg_buscador = DialogBuscador()
+        var.dlg_imprimir = DialogImpresora()
+        var.dlg_confirmar_importe = DialogConfirmarImporte()
 
-        var.ui.actionSalir.triggered.connect(events.Eventos.salir)
-        var.ui.actionsalir.triggered.connect(events.Eventos.salir)
-        var.ui.actionBuscador.triggered.connect(events.Eventos.abrir_buscador)
-        var.ui.actionImpresora.triggered.connect(events.Eventos.abrir_impresora)
-        var.ui.action_about.triggered.connect(events.Eventos.about)
+        var.ui.action_menu_salir.triggered.connect(events.salir)
+        var.ui.action_salir.triggered.connect(events.salir)
+
+        var.ui.action_recuperar.triggered.connect(events.recuperar_copia)
+        var.ui.action_menu_recuperar.triggered.connect(events.recuperar_copia)
+
+        var.ui.action_backup.triggered.connect(events.copia_seguridad)
+        var.ui.action_menu_backup.triggered.connect(events.copia_seguridad)
+
+        var.ui.action_importar_productos.triggered.connect(events.seleccion_fichero_productos)
+        var.ui.action_impresora.triggered.connect(events.abrir_impresora)
+        var.ui.action_about.triggered.connect(events.about)
         var.ui.action_i_clientes.triggered.connect(impresora.Printer.informe_cliente)
         var.ui.action_i_productos.triggered.connect(impresora.Printer.informe_productos)
         var.ui.action_i_facturas.triggered.connect(impresora.Printer.informe_facturas)
@@ -78,33 +111,20 @@ class Main(QtWidgets.QMainWindow):
         var.ui.statusbar.addPermanentWidget(var.ui.lbl_status, 1)
         var.ui.lbl_status.setText('Buenos Días')
 
-        self.db_connect(var.filebd)
+        conexion = db_connect(var.filebd)
+        if not conexion:
+            sys.exit()
 
         c.Clientes.crear_modulo()
         p.Productos.crear_modulo()
         f.Facturas.crear_modulo()
         v.Ventas.crear_modulo()
 
-    @staticmethod
-    def db_connect(filename):
-        db = QtSql.QSqlDatabase.addDatabase('QSQLITE')
-        db.setDatabaseName(filename)
-        if not db.open():
-            QtWidgets.QMessageBox.critical(None, 'No se puede abrir la base de datos',
-                                           'No se puede establecer conexion.\n'
-                                           'Haz Click para Cancelar.', QtWidgets.QMessageBox.Cancel)
-            return False
-        else:
-            print('Conexión Establecida')
-        return True
-
-    def closeEvent(self, event):
-        if event:
-            events.Eventos.salir(event)
-
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
     window = Main()
     window.showMaximized()
+    window.setWindowTitle("BARREIROCHAPELA")
+    window.setWindowIcon(QIcon("res/icono.ico"))
     sys.exit(app.exec())

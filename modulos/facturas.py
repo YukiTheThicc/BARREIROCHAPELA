@@ -2,8 +2,40 @@ from datetime import datetime
 from PyQt5 import QtSql
 
 from venCalendar import *
+from venConfirmacion import *
 import var
 import modulos.ventas as v
+
+
+class DialogEliminarFactura(QtWidgets.QDialog):
+    """
+
+    Clase de la ventana de diálogo que saltará al intentar eliminar un cliente
+
+    """
+    def __init__(self):
+        super(DialogEliminarFactura, self).__init__()
+        Facturas.dlg_eliminar_factura = Ui_ven_confirmacion()
+        Facturas.dlg_eliminar_factura.setupUi(self)
+        self.pregunta = Facturas.dlg_eliminar_factura.lbl_pregunta
+        Facturas.dlg_eliminar_factura.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.Yes).clicked.connect(
+            Facturas.borrar_factura)
+        Facturas.dlg_eliminar_factura.btnbox_confirmar.button(QtWidgets.QDialogButtonBox.No).clicked.connect(self.close)
+
+
+def eliminar():
+    """
+
+    Funcion para llamar al dialogo de confirmacion para eliminar la factura.
+
+    :return: None
+
+    """
+    try:
+        Facturas.dlg_eliminar_factura.show()
+        Facturas.dlg_eliminar_factura.pregunta.setText("Esta seguro/a que quiere borrar?")
+    except Exception as error:
+        print('Error: %s' % str(error))
 
 
 class DialogCalendar(QtWidgets.QDialog):
@@ -21,6 +53,7 @@ class DialogCalendar(QtWidgets.QDialog):
 class Facturas:
 
     dlg_calendar = None
+    dlg_eliminar_factura = None
 
     @classmethod
     def crear_modulo(cls):
@@ -28,15 +61,15 @@ class Facturas:
 
         Modulo que crea las conexiones a eventos y ventanas de dialogo necesarias para el funcionamiento del
 
-        :return:
-        :rtype:
+        :return: None
 
         """
         cls.dlg_calendar = DialogCalendar()
+        cls.dlg_eliminar_factura = DialogEliminarFactura()
 
         var.ui.btn_fac_calendar.clicked.connect(cls.abrir_calendar)
         var.ui.btn_fac_facturar.clicked.connect(cls.alta_factura)
-        var.ui.btn_fac_anular.clicked.connect(cls.borrar_factura)
+        var.ui.btn_fac_anular.clicked.connect(eliminar)
         var.ui.btn_fac_buscar.clicked.connect(cls.db_mostrar_facturas_por_cliente)
         var.ui.btn_fac_recargar.clicked.connect(cls.db_mostrar_facturas)
         var.ui.tbl_fac_listfact.clicked.connect(cls.cargar_factura)
@@ -49,7 +82,7 @@ class Facturas:
     def abrir_calendar(cls):
         """
 
-
+        Abre la ventana de diálogo del calendario.
 
         :return:
         :rtype:
@@ -64,12 +97,10 @@ class Facturas:
     def cargar_fecha(cls, q_date):
         """
 
+        Carga la fecha seleccionada en la ventana de diálogo de q_date como un str en el campoo de fecha.
 
-
-        :param q_date:
-        :type q_date:
-        :return:
-        :rtype:
+        :param q_date: q_date, fecha
+        :return: None
 
         """
         try:
@@ -83,10 +114,9 @@ class Facturas:
     def alta_factura(cls):
         """
 
+        Recoge los datos de la factura de los campos de la interfaz de factura.
 
-
-        :return:
-        :rtype:
+        :return: None
 
         """
         dni = var.ui.edit_fac_dni.text()
@@ -100,10 +130,9 @@ class Facturas:
     def cargar_factura(cls):
         """
 
+        Carga la factura seleccionada en la tabla y recoge los datos que falten de la base de datos.
 
-
-        :return:
-        :rtype:
+        :return:None
 
         """
         try:
@@ -120,9 +149,9 @@ class Facturas:
     def borrar_factura(cls):
         """
 
+        Recoge e código de la factura y llama a la función que la elimina de la base de datos.
 
-
-        :return:
+        :return: None
 
         """
         try:
@@ -136,10 +165,9 @@ class Facturas:
     def limpiar_factura():
         """
 
+        Limpia los campos de la interfaz de facturas.
 
-
-        :return:
-        :rtype:
+        :return:None
 
         """
         var.ui.edit_fac_dni.setText("")
@@ -151,16 +179,12 @@ class Facturas:
     def db_alta_factura(cls, dni, fecha, nombre):
         """
 
+        Da de alta una factura en la base de datos con los datos pasados como parámetros.
 
-
-        :param dni:
-        :type dni:
-        :param fecha:
-        :type fecha:
-        :param nombre:
-        :type nombre:
-        :return:
-        :rtype:
+        :param dni: str, dni cliente
+        :param fecha: str, fecha de factura
+        :param nombre: str, nombre del cliente
+        :return: None
 
         """
         query = QtSql.QSqlQuery()
@@ -178,10 +202,9 @@ class Facturas:
     def db_mostrar_facturas(cls):
         """
 
+        Recoge las facturas de la base de datos y las muestra en la tabla de facturas.
 
-
-        :return:
-        :rtype:
+        :return: None
 
         """
         i = 0
@@ -205,10 +228,9 @@ class Facturas:
     def db_mostrar_facturas_por_cliente():
         """
 
+        Muestra las facturas de un cliente dado en la tabla de facturas.
 
-
-        :return:
-        :rtype:
+        :return: None
 
         """
         dni = var.ui.edit_fac_dni.text()
@@ -234,12 +256,10 @@ class Facturas:
     def db_cargar_fac(cod):
         """
 
+        Carga el los datos de una factura con el código pasado por parámetro.
 
-
-        :param cod:
-        :type cod:
-        :return:
-        :rtype:
+        :param cod: int, codigo factura
+        :return: None
 
         """
         query = QtSql.QSqlQuery()
@@ -256,10 +276,10 @@ class Facturas:
     def db_borrar_factura(cls, codigo):
         """
 
-
+        Borra una factura de la base de datos con el código pasado como parámetro.
 
         :param codigo:
-        :return:
+        :return: None
 
         """
         query = QtSql.QSqlQuery()

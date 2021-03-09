@@ -12,6 +12,13 @@ class Printer():
 
     @staticmethod
     def cabecera():
+        """
+
+        Imprime la cabecera de todos los informes.
+
+        :return: None
+
+        """
         try:
             logo = './res/img/logo.jpg'
             var.rep.setTitle('INFORMES')
@@ -33,6 +40,13 @@ class Printer():
 
     @staticmethod
     def cabecera_cliente():
+        """
+
+        Imprime la cabecera del informe de clientes.
+
+        :return: None
+
+        """
         try:
             var.rep.setFont('Helvetica-Bold', size=9)
             textlistado = 'LISTADO DE CLIENTES'
@@ -48,7 +62,15 @@ class Printer():
         except Exception as error:
             print('Error en cabecera_cliente: %s' % str(error))
 
-    def cabecera_producto(self):
+    @staticmethod
+    def cabecera_producto():
+        """
+
+        Imprime la cabecera del informe de productos.
+
+        :return: None
+
+        """
         try:
             var.rep.setFont('Helvetica-Bold', size=9)
             textlistado = 'LISTADO DE PRODUCTOS'
@@ -65,6 +87,16 @@ class Printer():
 
     @staticmethod
     def cabecera_factura(codfac):
+        """
+
+        Imprime la cabecera del informe de facturas.
+
+        :param codfac: int, codigo de factura
+        :return: None
+
+        Imprime la cabecera del informe de una factura según el código pasado como parámetro.
+
+        """
         try:
             var.rep.setFont('Helvetica-Bold', size=11)
             var.rep.drawString(55, 725, 'Cliente: ')
@@ -125,6 +157,14 @@ class Printer():
 
     @staticmethod
     def recoger_nombre_articulo(codigo):
+        """
+
+        Método que recoge el nombre de un artículo según su código.
+
+        :param codigo: int, código de artículo
+        :return: None
+
+        """
         try:
             query = QtSql.QSqlQuery()
             query.prepare('select nombre from articulos where codigo = :codigo')
@@ -138,6 +178,13 @@ class Printer():
 
     @staticmethod
     def informe_cliente():
+        """
+
+        Crea el cuerpo del informe de clientes.
+
+        :return: None
+
+        """
         try:
             textlistado = 'LISTADO DE CLIENTES'
             var.rep = canvas.Canvas('informes/listadoclientes.pdf', pagesize=A4)
@@ -178,6 +225,13 @@ class Printer():
 
     @staticmethod
     def informe_productos():
+        """
+
+        Crea el cuerpo del informe de productos.
+
+        :return: None
+
+        """
         try:
             var.rep = canvas.Canvas('informes/listadoproducto.pdf', pagesize=A4)
             Printer.cabecera()
@@ -217,6 +271,13 @@ class Printer():
 
     @staticmethod
     def informe_facturas():
+        """
+
+        Crea el cuerpo del informe de facturas.
+
+        :return: None
+
+        """
         try:
             textlistado = 'FACTURA'
             var.rep = canvas.Canvas('informes/factura.pdf', pagesize=A4)
@@ -261,6 +322,13 @@ class Printer():
 
     @staticmethod
     def informe_facturas_cliente():
+        """
+
+        Crea el cuerpo del informe de las facturas de un cliente.
+
+        :return: None
+
+        """
         try:
             textlistado = 'FACTURAS POR CLIENTE'
             var.rep = canvas.Canvas('informes/facturasporcliente.pdf', pagesize=A4)
